@@ -18,6 +18,10 @@ class Major extends Model
         return $this->hasMany('App\Instructor');
     }
 
+    public function courses(){
+        return $this->hasMany('App\Course');
+    }
+
 
 
 }

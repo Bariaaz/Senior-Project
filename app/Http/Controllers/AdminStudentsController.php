@@ -7,6 +7,8 @@ use App\User;
 use App\Major;
 use App\Student;
 use Illuminate\Support\Facades\Input;
+use App\Language;
+use App\CourseLanguage;
 
 class AdminStudentsController extends Controller
 {
@@ -28,8 +30,9 @@ class AdminStudentsController extends Controller
      */
     public function create()
     {
+        $languages=Language::pluck('name', 'id')->all();
         $majors=Major::pluck('name', 'id')->all();
-        return view('Admin.students.create', compact('majors'));
+        return view('Admin.students.create', compact('majors','languages'));
     }
 
     /**
@@ -55,7 +58,7 @@ class AdminStudentsController extends Controller
         $student=new Student([
             'Foreign_fullname'=>Input::get('Foreign_fullname'),
             'Arabic_fullname'=>Input::get('Arabic_fullname'),
-            'language'=>Input::get('language'),
+            'language_id'=>Input::get('language_id'),
             'major_id'=>Input::get('major_id'),
             'academic_year'=>Input::get('academic_year'),
             'has_L3_Course'=>Input::get('has_L3_Course'),
@@ -88,7 +91,8 @@ class AdminStudentsController extends Controller
     {
         $user = User::with(['student'])->find($id);
         $majors=Major::pluck('name', 'id')->all();
-        return view('Admin.students.edit', compact('user','majors'));
+        $languages=Language::pluck('name', 'id')->all();
+        return view('Admin.students.edit', compact('user','majors','languages'));
     }
 
     /**
@@ -114,7 +118,7 @@ class AdminStudentsController extends Controller
         Student::where('user_id', $id)->first()->update(array(
             'Foreign_fullname'=>$input['student']['Foreign_fullname'],
             'Arabic_fullname'=>$input['student']['Arabic_fullname'],
-            'language'=>$input['student']['language'],
+            'language_id'=>$input['student']['language_id'],
             'major_id'=>$input['student']['major_id'],
             'academic_year'=>$input['student']['academic_year'],
             'has_L3_Course'=>$input['student']['has_L3_Course'],
@@ -134,5 +138,47 @@ class AdminStudentsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function fetchCourses($id){
+        $s=Student::find($id);
+        $courses=Language::where('id', '=', $s->language_id)->first()->courses()->where(function($q) use($s){
+            $q->where('major_id',$s->major_id)->orWhere('major_id',2);
+        })->get();
+
+        /*$courses=CourseLanguage::whereDoesntHave('students', function($q) use($id){
+            $q->where('student_id', $id);
+        })->get();
+        /*$courses=$l->courses()->where('major_id',$s->major_id)->orWhere('major_id',2)->get();
+        $Courses=$l->courses->whereBetween('major_id', [$s->major_id, 2])->get();
+        $courses = $l->courses->where(function ($q) use($s) {
+            $q->where('major_id', $s->major_id)->orWhere('major_id', 2);
+        })->get();*/
+        return view('Admin.students.assignCourses',compact('courses','id'));
+    }
+
+    public function saveCoursesAssigned(Request $request,$student_id){
+        $student=Student::find($student_id);
+        foreach($request->id as $coursechoiceId){
+            $courselanguage=CourseLanguage::find($coursechoiceId);
+            $student->courses()->attach($courselanguage);
+        }
+        return redirect('admin/students');
+        
+    }
+
+    public function editAssignedCourses($id){
+        $student=Student::find($id);
+        $courses=$student->courses;
+        return view('Admin.students.editAssignedCourses', compact('courses','student'));
+    }
+
+    public function updateAssignedCourses(Request $request, $id){
+        $student=Student::find($id);
+        foreach($request->id as $coursechoiceId){
+            $courselanguage=CourseLanguage::find($coursechoiceId);
+            $student->courses()->detach($courselanguage);
+        }
+        return redirect('admin/students');
     }
 }

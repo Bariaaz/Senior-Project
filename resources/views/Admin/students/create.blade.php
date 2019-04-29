@@ -49,8 +49,8 @@
 </div>
 
 <div class="form-group">
-    {!! Form::label('language', 'Language') !!}
-    {!! Form::select('language', array('English'=>'English', 'French'=>'French'),1 ,['class' => 'form-control']) !!}
+    {!! Form::label('language_id', 'Language') !!}
+    {!! Form::select('language_id', array(''=>'Choose a language') + $languages ,['class' => 'form-control']) !!}
 </div>
 
 <div class="form-group">

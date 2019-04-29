@@ -10,7 +10,8 @@
 <body>
 
 <div class="container">
-  <h2>Courses</h2>           
+  <h3>{{$student->Foreign_fullname}} Courses</h3>
+  {!! Form::open(['method' => 'POST', 'action'=> ['AdminStudentsController@updateAssignedCourses',$student->id]]) !!}           
   <table class="table">
     <thead>
       <tr>
@@ -18,22 +19,34 @@
         <th>Course description</th>
         <th>Semester</th>
         <th>Academic Year</th>
+        <th>#</th>
       </tr>
     </thead>
     <tbody>
         @if($courses)
             @foreach($courses as $course)
                 <tr>
-                    <td>{{$course->course_code}}</td>
-                    <td>{{$course->description}}</td>
-                    <td>{{$course->semester->display_name}}</td>
-                    <td>{{$course->semester->academic_year}}
+                    <td>{{$course->course->course_code}}</td>
+                    <td>{{$course->course->description}}</td>
+                    <td>{{$course->course->semester->display_name}}</td>
+                    <td>{{$course->course->semester->academic_year}}</td>
+                    <td>
+                      <div class="form-group">
+                        {!! Form::checkbox('id[]', $course->id, false) !!}
+                      </div>
+                    </td>
                 </tr>
             @endforeach
-        @endif    
+        @endif 
+        {!! Form::submit('detach courses', ['class' => 'btn btn-info']) !!}   
     </tbody>
   </table>
 </div>
+<div>
 
+{!! Form::close()!!}
+</div>
 </body>
 </html>
+
+

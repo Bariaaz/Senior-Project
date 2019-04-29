@@ -13,21 +13,29 @@
     {!! Form::text('description', null, ['class' => 'form-control']) !!}
 </div>
 
+<div class="form-group">
+    {!! Form::label('major_id', 'Major') !!}
+    {!! Form::select('major_id', array(''=>'Choose a major') + $majors, ['class' => 'form-control']) !!}
+</div>
 
 <div class="form-group">
     {!! Form::label('semester_id', 'Semester') !!}
     {!! Form::select('semester_id', array(''=>'Choose a semester') + $semesters, ['class' => 'form-control']) !!}
 </div>
 
-<div>
-    {!! Form::label('language', 'Languages available:') !!}
-</div>
-@foreach($languages as $l)
 <div class="form-group">
-        {!! Form::label('language', $l->name) !!}
-        {!! Form::checkbox('language[]', $l->id, false) !!}
+    {!! Form::label('label', 'Languages') !!}
 </div>
-@endforeach
+
+<div>
+    @foreach($languages as $id=>$name)
+        <div class="form-group">
+        {!! Form::label('language_id', $name) !!}
+        {!! Form::checkbox('language_id[]', $id, false) !!}
+        </div>
+    @endforeach
+</div>
+
 {!! Form::submit('Add Course', ['class' => 'btn btn-info']) !!}
 
 {!! Form::close()!!}

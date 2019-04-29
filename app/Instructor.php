@@ -19,4 +19,8 @@ class Instructor extends Model
     public function major(){
         return $this->belongsTo('App\Major');
     }
+   
+    public function courses(){
+        return $this->belongsToMany('App\CourseLanguage');
+    }
 }

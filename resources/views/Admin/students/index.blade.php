@@ -19,6 +19,8 @@
         <th>File Number</th>
         <th>Academic Year</th>
         <th>Language</th>
+        <th>Assign Courses</th>
+        <th>Edit Assigned Courses</td>
       </tr>
     </thead>
     <tbody>
@@ -29,7 +31,9 @@
                     <td>{{$user->student->major->name}}</td>
                     <td>{{$user->fileNumber}}</td>
                     <td>{{$user->student->academic_year}}
-                    <td>{{$user->student->language}}</td>
+                    <td>{{$user->student->language->name}}</td>
+                    <td><a href="{{url('admin/students/'.$user->student->id.'/assignCourses')}}">Assign Courses</a></td>
+                    <td><a href="{{url('admin/students/'.$user->student->id.'/editAssignedCourses')}}">Edit Courses</a></td>
                 </tr>
             @endforeach
         @endif    

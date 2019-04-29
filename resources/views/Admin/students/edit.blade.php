@@ -50,7 +50,7 @@
 
 <div class="form-group">
     {!! Form::label('language', 'Language') !!}
-    {!! Form::select('student[language]', array('English'=>'English', 'French'=>'French'), old('student[language]',$user->language) ,['class' => 'form-control']) !!}
+    {!! Form::select('student[language_id]', $languages, old('student[language]',$user->language) ,['class' => 'form-control']) !!}
 </div>
 
 <div class="form-group">

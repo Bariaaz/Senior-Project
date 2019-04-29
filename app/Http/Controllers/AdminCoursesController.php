@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Semester;
 use App\Course;
 use App\Language;
+use App\Major;
 
 class AdminCoursesController extends Controller
 {
@@ -27,9 +28,10 @@ class AdminCoursesController extends Controller
      */
     public function create()
     {
+        $majors=Major::pluck('name', 'id')->all();
         $semesters=Semester::pluck('display_name', 'id')->all();
-        $languages=Language::all();
-        return view('Admin.courses.create', compact('semesters','languages'));
+        $languages=Language::pluck('name','id')->all();
+        return view('Admin.courses.create', compact('semesters','languages','majors'));
     }
 
     /**
@@ -42,11 +44,13 @@ class AdminCoursesController extends Controller
     {
         $course=new Course;
         $course->course_code=$request->course_code;
-        $course->description=$request->description;
         $course->semester_id=$request->semester_id;
+        $course->major_id=$request->major_id;
+        $course->description=$request->description;
         $course->save();
-        foreach($request->language as $l){
-            $lang=Language::find($l);
+
+        foreach($request->language_id as $id){
+            $lang=Language::find($id);
             $course->languages()->attach($lang);
         }
         return redirect('admin/courses');

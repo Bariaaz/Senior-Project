@@ -17,7 +17,7 @@ class CreateStudentsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('major_id');
-            $table->enum('language',['English', 'French']);
+            $table->unsignedInteger('language_id');
             $table->string('Foreign_fullname');
             $table->string('Arabic_fullname');
             $table->string('academic_year');
@@ -27,6 +27,7 @@ class CreateStudentsTable extends Migration
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('major_id')->references('id')->on('majors')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('language_id')->references('id')->on('languages')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

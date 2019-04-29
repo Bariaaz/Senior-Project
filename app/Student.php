@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     protected $fillable=[
-        'language', 'Arabic_fullname', 'Foreign_fullname',
+        'language_id', 'Arabic_fullname', 'Foreign_fullname',
         'academic_year', 'note', 'has_L3_Course', 'branch',
         'major_id'
     ];
@@ -19,6 +19,14 @@ class Student extends Model
 
     public function major(){
         return $this->belongsTo('App\Major');
+    }
+
+    public function language(){
+        return $this->belongsTo('App\Language');
+    }
+
+    public function courses(){
+        return $this->belongsToMany('App\CourseLanguage');
     }
 
 

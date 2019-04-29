@@ -1,5 +1,5 @@
 <?php
-use App\Course;
+use App\Student;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,14 +23,22 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('admin/students','AdminStudentsController');
 Route::resource('admin/instructors','AdminInstructorsController');
 Route::resource('admin/courses','AdminCoursesController');
 Route::resource('admin/majors','AdminMajorsController');
 Route::resource('admin/semesters','AdminSemestersController');
 Route::resource('admin/groups','AdminGroupsController');
+Route::resource('admin/students', 'AdminStudentsController');
+Route::get('admin/students/{id}/assignCourses', 'AdminStudentsController@fetchCourses');
+Route::post('admin/studentAssinedCourses/{id}', 'AdminStudentsController@saveCoursesAssigned');
+Route::post('admin/updateStudentAssignedCourses/{id}','AdminStudentsController@updateAssignedCourses');
+Route::get('admin/students/{id}/editAssignedCourses', 'AdminStudentsController@editAssignedCourses');
+
 
 /*Route::get('/test', function(){
-    $course=Course::find(1);
-    echo $course->semester;
+    $s=Student::find(1);
+    foreach($s->courses as $lcourse){
+        echo"<lu>" 
+         ."<li>".$lcourse->course->course_code."</li></lu>";    
+    }
 });*/

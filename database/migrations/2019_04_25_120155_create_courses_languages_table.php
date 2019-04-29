@@ -14,11 +14,11 @@ class CreateCoursesLanguagesTable extends Migration
     public function up()
     {
         Schema::create('course_language', function (Blueprint $table) {
+            $table->increments('id');
             $table->unsignedInteger('course_id');
             $table->unsignedInteger('language_id');
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('language_id')->references('id')->on('languages')->onDelete('cascade')->onUpdate('cascade');
-            $table->primary(['course_id', 'language_id']);
 
         });
     }

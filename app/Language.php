@@ -11,6 +11,10 @@ class Language extends Model
     ];
 
     public function courses(){
-        return $this->belongsToMany('App/Course')->withpivot('description');
+        return $this->belongsToMany('App\Course')->withPivot('id');
+    }
+    
+    public function students(){
+        return $this->hasMany('App\Student');
     }
 }
