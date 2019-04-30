@@ -142,18 +142,14 @@ class AdminStudentsController extends Controller
 
     public function fetchCourses($id){
         $s=Student::find($id);
-        $courses=Language::where('id', '=', $s->language_id)->first()->courses()->where(function($q) use($s){
-            $q->where('major_id',$s->major_id)->orWhere('major_id',2);
-        })->get();
-
-        /*$courses=CourseLanguage::whereDoesntHave('students', function($q) use($id){
-            $q->where('student_id', $id);
-        })->get();
-        /*$courses=$l->courses()->where('major_id',$s->major_id)->orWhere('major_id',2)->get();
-        $Courses=$l->courses->whereBetween('major_id', [$s->major_id, 2])->get();
-        $courses = $l->courses->where(function ($q) use($s) {
-            $q->where('major_id', $s->major_id)->orWhere('major_id', 2);
-        })->get();*/
+        $courses=CourseLanguage::where(function($q) use($s,$id){
+            $q->whereHas('course', function($q) use($s){
+                $q->where('major_id', $s->major_id)->orWhere('major_id',2);
+            })->whereDoesntHave('students', function($q) use ($id){
+                $q->where('student_id', $id);
+            });
+        })->where('language_id', $s->language_id)->get();
+       
         return view('Admin.students.assignCourses',compact('courses','id'));
     }
 
