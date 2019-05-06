@@ -29,6 +29,10 @@ class Student extends Model
         return $this->belongsToMany('App\CourseLanguage');
     }
 
+    public function groups(){
+        return $this->belongsToMany('App\Group')->withPivot(['is_active','leave_date','start_date']);
+    }
+
 
 
 }

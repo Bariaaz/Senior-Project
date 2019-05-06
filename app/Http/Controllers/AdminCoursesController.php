@@ -75,7 +75,10 @@ class AdminCoursesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $course=Course::find($id);
+        $majors=Major::pluck('name', 'id')->all();
+        $semesters=Semester::pluck('display_name', 'id')->all();
+        return view('Admin.courses.edit', compact('semesters','majors','course'));
     }
 
     /**
@@ -87,7 +90,8 @@ class AdminCoursesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $course=Course::find($id)->update($request->all());
+        return redirect('admin/courses');
     }
 
     /**

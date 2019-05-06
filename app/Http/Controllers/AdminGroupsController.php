@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\CourseLanguage;
+use App\Group;
+use App\Student;
 
 class AdminGroupsController extends Controller
 {
@@ -13,7 +16,8 @@ class AdminGroupsController extends Controller
      */
     public function index()
     {
-        
+        $groups=Group::all();
+        return view('Admin.groups.index', compact('groups'));
     }
 
     /**
@@ -23,7 +27,21 @@ class AdminGroupsController extends Controller
      */
     public function create()
     {
-        //
+        $c=CourseLanguage::all();
+        $courses=array();
+        foreach($c as $course){
+            $courses[$course->id]=$course->course->description.' '.$course->language->name;
+        }
+        $weekdays=[
+            'Monday'=>'Monday',
+            'Tuseday'=>'Tuseday',
+            'Wednesday'=>'Wednesday',
+            'Thursday'=>'Thursday',
+            'Friday'=>'Friday',
+            'Saturday'=>'Saturday'
+        ];
+
+        return view('Admin.groups.create', compact('courses','weekdays'));
     }
 
     /**
@@ -34,7 +52,9 @@ class AdminGroupsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $group=Group::create($request->all());
+        $group->save();
+        return redirect('admin/groups');
     }
 
     /**
@@ -56,7 +76,21 @@ class AdminGroupsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $c=CourseLanguage::all();
+        $group=Group::find($id);
+        $courses=array();
+        foreach($c as $course){
+            $courses[$course->id]=$course->course->description.' '.$course->language->name;
+        }
+        $weekdays=[
+            'Monday'=>'Monday',
+            'Tuseday'=>'Tuseday',
+            'Wednesday'=>'Wednesday',
+            'Thursday'=>'Thursday',
+            'Friday'=>'Friday',
+            'Saturday'=>'Saturday'
+        ];
+        return view('Admin.groups.edit', compact('courses','weekdays','group'));
     }
 
     /**
@@ -68,7 +102,8 @@ class AdminGroupsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $group=Group::find($id)->update($request->all());
+        return redirect('admin/groups');
     }
 
     /**
@@ -80,5 +115,42 @@ class AdminGroupsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function fetchStudents($group_id){
+        $group=Group::find($group_id);
+        $course=$group->course_language;
+        $students=Student::where(function($q) use($course,$group){
+            $q->whereHas('courses', function($q) use($course){
+                $q->where('course_language_id',$course->id);
+            })->whereDoesntHave('groups', function($q) use($group){
+                $q->where('course_language_id',$group->course_language_id);
+            });
+        })->get();
+        return view('Admin.groups.assignStudents',compact('students','group_id'));
+    }
+
+    public function saveStudentsAssigned(Request $request, $group_id){
+        $group=Group::find($group_id);
+        foreach($request->id as $student){
+            $studentObject=Student::find($student);
+            $group->students()->attach($studentObject,['is_active'=> 1]);
+        }
+        return redirect('admin/groups');
+    }
+
+    public function editAssignedStudents($group_id){
+        $group=Group::find($group_id);
+        $students=$group->students;
+        return view('Admin.groups.editAssignedStudents',compact('students', 'group'));
+    }
+
+    public function updateAssignedStudents(Request $request, $group_id){
+        $group=Group::find($group_id);
+        foreach($request->id as $studentChoiceId){
+            $student=Student::find($studentChoiceId);
+            $group->students()->detach($student);
+        }
+        return redirect('admin/groups');
     }
 }

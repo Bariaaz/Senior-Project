@@ -24,7 +24,7 @@
         @if($courses)
             @foreach($courses as $course)
                 <tr>
-                    <td>{{$course->course_code}}</td>
+                    <td><a href="{{route('courses.edit',$course->id)}}">{{$course->course_code}}</a></td>
                     <td>{{$course->description}}</td>
                     <td>{{$course->semester->display_name}}</td>
                     <td>{{$course->semester->academic_year}}

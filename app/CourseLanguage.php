@@ -25,4 +25,8 @@ class CourseLanguage extends Model
      public function instructors(){
          return $this->belongsToMany('App\Instructor');
      }
+
+     public function groups(){
+         return $this->hasMany('App\Group');
+     }
 }
