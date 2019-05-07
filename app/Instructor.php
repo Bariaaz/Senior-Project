@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Instructor extends Model
 {
     protected $fillable=[
-        'fullname', 
+        'fullname','major_id' 
 
     ];
 

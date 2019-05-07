@@ -26,12 +26,21 @@ Route::resource('admin/majors','AdminMajorsController');
 Route::resource('admin/semesters','AdminSemestersController');
 Route::resource('admin/groups','AdminGroupsController');
 Route::resource('admin/students', 'AdminStudentsController');
+Route::resource('admin/exams','AdminExamsController');
 
 //Assigning Courses to Students Routes
 Route::get('admin/students/{id}/assignCourses', 'AdminStudentsController@fetchCourses');
 Route::post('admin/studentAssinedCourses/{id}', 'AdminStudentsController@saveCoursesAssigned');
 Route::post('admin/updateStudentAssignedCourses/{id}','AdminStudentsController@updateAssignedCourses');
 Route::get('admin/students/{id}/editAssignedCourses', 'AdminStudentsController@editAssignedCourses');
+
+
+//Assigning courses to Instructors Routes
+Route::get('admin/instructors/{id}/assignCourses', 'AdminInstructorsController@fetchCourses');
+Route::post('admin/instructorAssinedCourses/{id}', 'AdminInstructorsController@saveCoursesAssigned');
+Route::post('admin/updateInstructorAssignedCourses/{id}','AdminInstructorsController@updateAssignedCourses');
+Route::get('admin/instructors/{id}/editAssignedCourses', 'AdminInstructorsController@editAssignedCourses');
+
 
 //Assigning Students to Groups Routes
 Route::get('admin/groups/{id}/assignStudents', 'AdminGroupsController@fetchStudents');

@@ -17,15 +17,19 @@
         <th>Name</th>
         <th>Major</th>
         <th>email</th>
+        <th>Assign Courses</th>
+        <th>Edit Courses Assigned</th>
       </tr>
     </thead>
     <tbody>
         @if($users)
             @foreach($users as $user)
                 <tr>
-                    <td>{{$user->instructor->fullname}}</td>
+                    <td><a href="{{route('instructors.edit',$user->id)}}">{{$user->instructor->fullname}}</td>
                     <td>{{$user->instructor->major->name}}</td>
                     <td>{{$user->email}}</td>
+                    <td><a href="{{url('admin/instructors/'.$user->instructor->id.'/assignCourses')}}">Assign Courses</a></td>
+                    <td><a href="{{url('admin/instructors/'.$user->instructor->id.'/editAssignedCourses')}}">Edit Courses</a></td>
                 </tr>
             @endforeach
         @endif    
