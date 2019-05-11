@@ -1,5 +1,4 @@
 <?php
-use App\Student;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +15,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+// Authentication Routes...
+$this->get('login', 'Auth\LoginController@showLoginForm')->name('login');
+$this->post('login', 'Auth\LoginController@login');
+$this->post('logout', 'Auth\LoginController@logout')->name('logout');
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Password Reset Routes...
+$this->get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+$this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+$this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+$this->post('password/reset', 'Auth\ResetPasswordController@reset');
+
+
+Route::get('admin/home','AdminController@show');//here should the admin panel layout be shown
 //CRUD functionalities Routes 
 Route::resource('admin/instructors','AdminInstructorsController');
 Route::resource('admin/courses','AdminCoursesController');
@@ -48,11 +57,18 @@ Route::get('admin/groups/{id}/editAssignedStudents', 'AdminGroupsController@edit
 Route::post('admin/groupAssignedStudents/{group_id}','AdminGroupsController@saveStudentsAssigned');
 Route::post('admin/updateGroupAssignedStudents/{group_id}','AdminGroupsController@updateAssignedStudents');
 
+//Assigning instructors to Groups Routes
+Route::get('admin/groups/{id}/assignInstructors', 'AdminGroupsController@fetchInstructors');
+Route::get('admin/groups/{id}/editAssignedInstructors', 'AdminGroupsController@editAssignedInstructors');
+Route::post('admin/groupAssignedInstructors/{group_id}','AdminGroupsController@saveInstructorsAssigned');
+Route::post('admin/updateGroupAssignedInstructors/{group_id}','AdminGroupsController@updateAssignedInstructors');
 
-/*Route::get('/test', function(){
-    $s=Student::find(1);
-    foreach($s->courses as $lcourse){
-        echo"<lu>" 
-         ."<li>".$lcourse->course->course_code."</li></lu>";    
-    }
-});*/
+//Instructor Routes
+Route::get('instructor/groups','InstructorController@groupsindex');
+Route::get('groupInfo/{group_id}','InstructorController@showGroup');
+Route::get('instructor/{group_id}/takeAttendance','InstructorController@takeAttendance');
+//Instructor add edit grades Routes
+Route::post('instructor/{group_id}/fillGrades','InstructorController@fillGrades');
+Route::post('instructor/{group_id}/saveGrades','InstructorController@storeGrades');
+Route::get('groupInfo/{group_id}/{student_id}/edit','InstructorController@editGrades');
+Route::post('groupInfo/edit/{student_id}/updateGrades','InstructorController@updateGrades');

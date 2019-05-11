@@ -33,6 +33,10 @@ class Student extends Model
         return $this->belongsToMany('App\Group')->withPivot(['is_active','leave_date','start_date']);
     }
 
+    public function grades(){
+        return $this->hasMany('App\Grade');
+    }
+
 
 
 }

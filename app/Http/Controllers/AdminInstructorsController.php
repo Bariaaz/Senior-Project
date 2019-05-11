@@ -125,14 +125,24 @@ class AdminInstructorsController extends Controller
 
     public function fetchCourses($id){
         $s=Instructor::find($id);
-        $courses=CourseLanguage::where(function($q) use($s,$id){
-            $q->whereHas('course', function($q) use($s){
-                $q->where('major_id', '!=' , 2);
-            })->whereDoesntHave('instructors', function($q) use ($id){
-                $q->where('instructor_id', $id);
-            });
-        })->get();
-       
+        if($s->major_id==2){
+            $courses=CourseLanguage::where(function($q) use($s,$id){
+                $q->whereHas('course', function($q) use($s){
+                    $q->where('major_id', 2);
+                })->whereDoesntHave('instructors', function($q) use ($id){
+                    $q->where('instructor_id', $id);
+                });
+            })->get();
+        }else{
+            $courses=CourseLanguage::where(function($q) use($s,$id){
+                $q->whereHas('course', function($q) use($s){
+                    $q->where('major_id', '!=' , 2);
+                })->whereDoesntHave('instructors', function($q) use ($id){
+                    $q->where('instructor_id', $id);
+                });
+            })->get();
+        }
+        
         return view('Admin.instructors.assignCourses',compact('courses','id'));
     }
 

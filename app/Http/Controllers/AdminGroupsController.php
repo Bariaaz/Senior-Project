@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\CourseLanguage;
 use App\Group;
 use App\Student;
+use App\Instructor;
 
 class AdminGroupsController extends Controller
 {
@@ -150,6 +151,43 @@ class AdminGroupsController extends Controller
         foreach($request->id as $studentChoiceId){
             $student=Student::find($studentChoiceId);
             $group->students()->detach($student);
+        }
+        return redirect('admin/groups');
+    }
+
+    public function fetchInstructors($group_id){
+        $group=Group::find($group_id);
+        $course=$group->course_language;
+        $instructors=Instructor::where(function($q) use($course,$group){
+            $q->whereHas('courses', function($q) use($course){
+                $q->where('course_language_id',$course->id);
+            })->whereDoesntHave('groups', function($q) use($group){
+                $q->where('course_language_id',$group->course_language_id);
+            });
+        })->get();
+        return view('Admin.groups.assignInstructors',compact('instructors','group_id'));
+    }
+
+    public function saveInstructorsAssigned(Request $request, $group_id){
+        $group=Group::find($group_id);
+        foreach($request->id as $instructorId){
+            $i=Student::find($instructorId);
+            $group->instructors()->attach($i,['is_active'=> 1]);
+        }
+        return redirect('admin/groups');
+    }
+
+    public function editAssignedInstructors($group_id){
+        $group=Group::find($group_id);
+        $instructors=$group->instructors;
+        return view('Admin.groups.editAssignedInstructors',compact('instructors', 'group'));
+    }
+
+    public function updateAssignedInstructors(Request $request, $group_id){
+        $group=Group::find($group_id);
+        foreach($request->id as $instructorChoiceId){
+            $i=Instructor::find($instructorChoiceId);
+            $group->instructors()->detach($i);
         }
         return redirect('admin/groups');
     }

@@ -1,3 +1,6 @@
+@extends('layouts.temp')
+@extends('layouts.app')
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,24 +13,22 @@
 <body>
 
 <div class="container">
-  <h2>Exams</h2>           
+  <h2>Your Groups</h2>           
   <table class="table">
     <thead>
       <tr>
-        <th>Exam</th>
-        <th>Course</th>
-        <th>Language</th>
-        <th>Date</th>
+        <th>Group name</th>
+        <th>Take Attendance</th>
+        <th>Fill Grades</th>
       </tr>
     </thead>
     <tbody>
-        @if($exams)
-            @foreach($exams as $exam)
+        @if($groups)
+            @foreach($groups as $group)
                 <tr>
-                    <td><a href="{{route('exams.edit',$exam->id)}}">{{$exam->name}}</a></td>
-                    <td>{{$exam->course_language->course->description}}</td>
-                    <td>{{$exam->course_language->language->name}}</td>
-                    <td>{{$exam->exam_date}}
+                    <td><a href="{{url('groupInfo/'.$group->id)}}">{{$group->name}}</a></td>
+                    <td><a href="{{url('instructor/'.$group->id.'/takeAttendance')}}">take attendance</a></td>
+                    <td><a href="{{url('instructor/'.$group->id.'/fillGrades')}}">fill grades</a></td>
                 </tr>
             @endforeach
         @endif    
@@ -37,3 +38,4 @@
 
 </body>
 </html>
+@endsection

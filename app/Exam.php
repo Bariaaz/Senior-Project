@@ -17,4 +17,8 @@ class Exam extends Model
     public function course_language(){
         return $this->belongsTo('App\CourseLanguage');
     }
+
+    public function grades(){
+        return $this->hasMany('App\Grade');
+    }
 }

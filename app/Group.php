@@ -18,4 +18,8 @@ class Group extends Model
     public function students(){
         return $this->belongsToMany('App\Student')->withPivot(['is_active','start_date','leave_date']);    
     }
+
+    public function instructors(){
+        return $this->belongsToMany('App\Instructor')->withPivot(['is_active','start_date','leave_date']);
+    }
 }

@@ -23,4 +23,8 @@ class Instructor extends Model
     public function courses(){
         return $this->belongsToMany('App\CourseLanguage');
     }
+
+    public function groups(){
+        return $this->belongsToMany('App\Group')->withPivot(['is_active', 'start_date', 'leave_date']);
+    }
 }

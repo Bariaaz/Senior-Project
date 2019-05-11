@@ -19,6 +19,8 @@
         <th>language</th>
         <th>assign students</th>
         <th>Edit assigned students</th>
+        <th>assign Instructors</th>
+        <th>Edit assigned Instructors</th>
       </tr>
     </thead>
     <tbody>
@@ -30,6 +32,8 @@
                     <td>{{$group->course_language->language->name}}</td>
                     <td><a href="{{url('admin/groups/'.$group->id.'/assignStudents')}}">Assign Students</a></td>
                     <td><a href="{{url('admin/groups/'.$group->id.'/editAssignedStudents')}}">Edit Assigned students</a></td>
+                    <td><a href="{{url('admin/groups/'.$group->id.'/assignInstructors')}}">Assign Instructors</a></td>
+                    <td><a href="{{url('admin/groups/'.$group->id.'/editAssignedInstructors')}}">Edit Assigned Instructors</a></td>
                 </tr>
             @endforeach
         @endif    
