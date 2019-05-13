@@ -22,4 +22,8 @@ class Group extends Model
     public function instructors(){
         return $this->belongsToMany('App\Instructor')->withPivot(['is_active','start_date','leave_date']);
     }
+
+    public function sessions(){
+        return $this->hasMany('App\Session');
+    }
 }

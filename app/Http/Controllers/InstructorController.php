@@ -9,6 +9,9 @@ use App\Group;
 use App\Grade;
 use App\Exam;
 use App\Student;
+use Illuminate\Support\Facades\Input;
+use App\Session;
+use App\Attendance;
 
 class InstructorController extends Controller
 {
@@ -37,7 +40,50 @@ class InstructorController extends Controller
     }
 
     public function takeAttendance($group_id){
-        return view('Instructor.takeAttendance');
+        $group=Group::find($group_id);
+        $students=$group->students;
+        $weekdays=[
+            'Monday'=>'Monday',
+            'Tuseday'=>'Tuseday',
+            'Wednesday'=>'Wednesday',
+            'Thursday'=>'Thursday',
+            'Friday'=>'Friday',
+            'Saturday'=>'Saturday'
+        ];
+        return view('Instructor.takeAttendance',compact('students','group','weekdays'));
+    }
+
+    public function saveAttendance(Request $request,$group_id){
+        $input=$request->all();
+        $session=Session::create([
+            'session_date'=>Input::get('session_date'),
+            'note'=>Input::get('note'),
+            'day_of_week'=>Input::get('day_of_week'),
+            'starting_time'=>Input::get('starting_time'),
+            'ending_time'=>Input::get('ending_time'),
+            'group_id'=>$group_id
+        ]);
+        $group=Group::find($group_id);
+        $students=$group->students;
+        foreach($students as $student){
+            if(in_array($student->id,$request->students_id)){
+                $attendance=Attendance::create([
+                    'student_id'=>$student->id,
+                    'attended_int'=>1,
+                    'note'=>"test",
+                    'session_id'=>$session->id
+                ]);
+
+            }else{
+                $attendance=Attendance::create([
+                    'student_id'=>$student->id,
+                    'attended_int'=>0,
+                    'note'=>"test",
+                    'session_id'=>$session->id
+                ]);
+            }
+        }
+        return redirect('instructor/groups');
     }
 
     public function fillGrades(Request $request,$group_id){

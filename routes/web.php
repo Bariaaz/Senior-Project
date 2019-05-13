@@ -66,9 +66,14 @@ Route::post('admin/updateGroupAssignedInstructors/{group_id}','AdminGroupsContro
 //Instructor Routes
 Route::get('instructor/groups','InstructorController@groupsindex');
 Route::get('groupInfo/{group_id}','InstructorController@showGroup');
+//Instructor take Attendance Routes
 Route::get('instructor/{group_id}/takeAttendance','InstructorController@takeAttendance');
+Route::post('instructor/{group_id}/saveAttendance','InstructorController@saveAttendance');
 //Instructor add edit grades Routes
 Route::post('instructor/{group_id}/fillGrades','InstructorController@fillGrades');
 Route::post('instructor/{group_id}/saveGrades','InstructorController@storeGrades');
 Route::get('groupInfo/{group_id}/{student_id}/edit','InstructorController@editGrades');
 Route::post('groupInfo/edit/{student_id}/updateGrades','InstructorController@updateGrades');
+
+//Student Routes
+Route::get('student','StudentController@fetchGradesAndAttendance');
