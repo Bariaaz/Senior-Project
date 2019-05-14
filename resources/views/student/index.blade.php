@@ -1,4 +1,4 @@
-@extends('layouts.temp')
+@extends('layouts.app')
 @section('content')
 <!DOCTYPE html>
 <html lang="en">
@@ -36,7 +36,17 @@
                     <td>{{$grade->grade}}</td>
                 </tr>
             @endforeach
-        @endif    
+        @endif   
+        @if($languageGrade)
+                <tr>
+                    <td>{{$languageGrade->exam->course_language->course->course_code}}</td>
+                    <td>{{$languageGrade->exam->course_language->course->description}}</td>
+                    <td>{{$languageGrade->exam->course_language->course->semester->display_name}}</td>
+                    <td></td>
+                    <td>{{$languageGrade->created_at}}</td>
+                    <td>{{$languageGrade->grade}}</td>
+                </tr>
+        @endif     
     </tbody>
   </table>
 </div>

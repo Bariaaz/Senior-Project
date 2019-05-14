@@ -8,11 +8,12 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
+ <div class="container"> 
 <div class="well">   
     <h2>Group info :</h2>
     <h3>
         Name: {{$group->name}}<br><br>
-        Course: {{$group->course_language->course->description.' '.$group->course_language->language->name}}
+        Course: {{$group->course_language->course->description.' '.$group->course_language->language->name}}<br><br>
     </h3>
         {!! Form::open(['method' => 'POST', 'action'=> ['InstructorController@fillGrades',$group->id]]) !!}
         <div class="form-group">
@@ -22,8 +23,10 @@
           {!! Form::close()!!}
         </div>      
 </div> 
-<h2>    Group Students :</h2><br>
+</div>
 <div class="container">
+  
+  <h2>Group Students :</h2><br>
         <table class="table">
                 <thead>
                   <tr>

@@ -27,11 +27,14 @@ $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm
 $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
 
-Route::get('admin/home','AdminController@show');//here should the admin panel layout be shown
+Route::get('admin',function(){
+    return view('Admin.index');
+});
+
+
 //CRUD functionalities Routes 
 Route::resource('admin/instructors','AdminInstructorsController');
 Route::resource('admin/courses','AdminCoursesController');
-Route::resource('admin/majors','AdminMajorsController');
 Route::resource('admin/semesters','AdminSemestersController');
 Route::resource('admin/groups','AdminGroupsController');
 Route::resource('admin/students', 'AdminStudentsController');

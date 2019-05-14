@@ -1,5 +1,8 @@
-@extends('layouts.temp')
-@section('content')
+ <!-- Bootstrap Core CSS -->
+ <link href="{{asset('css/app.css')}}" rel="stylesheet">
+
+ <link href="{{asset('css/libs.css')}}" rel="stylesheet">
+
 <h1>ADD Course</h1>
 {!! Form::open(['method' => 'POST', 'action'=> 'AdminCoursesController@store']) !!}
 
@@ -39,6 +42,3 @@
 {!! Form::submit('Add Course', ['class' => 'btn btn-info']) !!}
 
 {!! Form::close()!!}
-
-
-@endsection

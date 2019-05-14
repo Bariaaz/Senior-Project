@@ -162,7 +162,7 @@ class AdminGroupsController extends Controller
             $q->whereHas('courses', function($q) use($course){
                 $q->where('course_language_id',$course->id);
             })->whereDoesntHave('groups', function($q) use($group){
-                $q->where('course_language_id',$group->course_language_id);
+                $q->where('group_id',$group->id);
             });
         })->get();
         return view('Admin.groups.assignInstructors',compact('instructors','group_id'));

@@ -37,7 +37,7 @@ class LoginController extends Controller
                     return 'instructor/groups';
                 break;
             case 'Administrator':
-                    return 'admin/home';
+                    return 'admin';
                 break; 
             case 'Student':
                     return 'student';

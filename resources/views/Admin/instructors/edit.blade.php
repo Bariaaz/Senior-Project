@@ -1,6 +1,9 @@
-@extends('layouts.temp')
-@section('content')
-<h1>EDIT STUDENT</h1>
+ <!-- Bootstrap Core CSS -->
+ <link href="{{asset('css/app.css')}}" rel="stylesheet">
+
+ <link href="{{asset('css/libs.css')}}" rel="stylesheet">
+
+<h1>EDIT Instructor</h1>
 {!! Form::model($user,['method' => 'PATCH', 'action'=> ['AdminInstructorsController@update',$user->id]]) !!}
 
 <div class="form-group">
@@ -46,4 +49,4 @@
 {!! Form::submit('Update Instructor', ['class' => 'btn btn-info']) !!}
 
 {!! Form::close()!!}
-@endsection
+

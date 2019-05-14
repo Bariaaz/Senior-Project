@@ -1,5 +1,8 @@
-@extends('layouts.temp')
-@section('content')
+ <!-- Bootstrap Core CSS -->
+ <link href="{{asset('css/app.css')}}" rel="stylesheet">
+
+ <link href="{{asset('css/libs.css')}}" rel="stylesheet">
+
 <h1>EDIT Exam</h1>
 {!! Form::model($exam,['method' => 'PATCH', 'action'=> ['AdminExamsController@update',$exam->id]]) !!}
 

@@ -1,5 +1,3 @@
-@extends('layouts.temp')
-@section('content')
 <h1>EDIT Course</h1>
 {!! Form::model($course,['method' => 'PATCH', 'action'=> ['AdminCoursesController@update',$course->id]]) !!}
 
@@ -26,4 +24,3 @@
 {!! Form::submit('Update Course', ['class' => 'btn btn-info']) !!}
 
 {!! Form::close()!!}
-@endsection

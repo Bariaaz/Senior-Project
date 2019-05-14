@@ -1,5 +1,3 @@
-@extends('layouts.temp')
-@section('content')
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,11 +64,11 @@
           @endif    
       </tbody>
     </table>
-  </div>
-  <div>
     {!! Form::submit('Submit', ['class' => 'btn btn-info']) !!}
 
     {!! Form::close()!!}
+  </div>
+  <div>
   </div>
   </body>
   </html>

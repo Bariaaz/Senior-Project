@@ -16,15 +16,11 @@ use App\Attendance;
 class InstructorController extends Controller
 {
     public function groupsindex(){
-        if (Auth::check()){
             $instructor = Auth::user()->instructor;
             $groups=Group::whereHas('instructors', function($q) use ($instructor){
                 $q->where('instructor_id',$instructor->id);
             })->get();
             return view('Instructor.groupsindex',compact('groups'));
-        }else{
-            echo "you should authenticate first";
-        }
     }
 
     public function showGroup($group_id){
@@ -120,12 +116,18 @@ class InstructorController extends Controller
             $q->where('id',$student->id);
         })->get()->pluck('grade','exam_id');*///a way to obtain an array of this student grades
         $exams= new Collection();
-        $tmp=$student->grades;
+        $tmp=Grade::where(function($q) use($course,$student){
+            $q->whereHas('student', function($q) use($student){
+                $q->where('id',$student->id);
+            })->whereHas('exam', function($q) use($course){
+                $q->where('course_language_id',$course->id);
+            });
+        })->get();
         foreach($tmp as $grade){
             $grades[$grade->exam_id]=$grade->grade;
             if($grade->exam->is_written_exam==0)
                 $exams->push($grade->exam);
-        }//all grades belonging to this student along with their exams information
+        }//all grades belonging to this student in this course along with their exams information
         return view('Instructor.editGrades', compact('grades','exams','student'));
     }
 
