@@ -1,3 +1,6 @@
+@extends('layouts.Admin')
+@section('content')
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,19 +17,18 @@
    <thead>
       <tr>
         <th style="text-align: center">Student</th>
-        @foreach($exams as $exam) 
-            <th style="text-align: center">{{$exam->name}}</th>
-        @endforeach
+        <th style="text-align: center">{{$exam->name}}</th>
       </tr>
     </thead>
     <tbody>
-     {!! Form::open(['method' => 'Post', 'action'=> ['InstructorController@updateGrades',$student->id,$group->id]]) !!}
+     {!! Form::open(['method' => 'POST', 'action'=> ['AdminAttendanceAndGradesController@storeGrades',$group_id]]) !!}
+     @foreach ($students as $student)
         <tr>
             <td>{{$student->Foreign_fullname}}</td>
-            @foreach($exams as $exam)
-            <td>{!! Form::text('grades['.$exam->id.']' ,$grades[$exam->id]  ,  ['class'=>'form-control'])  !!}</td>
-            @endforeach
+            <td>{!! Form::text('grades['.$student->id.']['.$exam->id.']' ,null  ,  ['class'=>'form-control'])  !!}</td>
         </tr>
+
+     @endforeach
 
      <td colspan="3">
      {!! Form::submit('SAVE', ['class'=>'btn btn-primary btn-block']) !!}
@@ -39,3 +41,4 @@
   </div>
 </body>
 </html>
+@endsection('content')

@@ -8,7 +8,7 @@ class Grade extends Model
 {
     protected $fillable=[
         'student_id','exam_id',
-        'grade'
+        'grade','created_at','updated_at'
     ];
     public function student(){
         return $this->belongsTo('App\Student');

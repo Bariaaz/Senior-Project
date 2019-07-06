@@ -9,6 +9,8 @@ use App\Student;
 use Illuminate\Support\Facades\Input;
 use App\Language;
 use App\CourseLanguage;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Hash;
 
 class AdminStudentsController extends Controller
 {
@@ -20,7 +22,7 @@ class AdminStudentsController extends Controller
     public function index()
     {
         $users=User::where('role_id',2)->get();
-        return view('Admin.students.index', compact('users'));
+        return View::make('Admin.students.index', compact('users'));
     }
 
     /**
@@ -105,12 +107,12 @@ class AdminStudentsController extends Controller
     public function update(Request $request, $id)
     {
         $input=$request->all();
-        $input['password']=bcrypt($request->password);
+        $pass=Hash::needsRehash($input['password']) ? Hash::make($input['password']) : $input['password'];
         $user=User::find($id)->update(array(
             'username'=>Input::get('username'),
             'email'=>Input::get('email'),
             'fileNumber'=>Input::get('fileNumber'),
-            'password'=>$input['password'],
+            'password'=>$pass,
             'phone_Number'=>Input::get('phone_Number'),
             'is_active'=>Input::get('is_active'),
             'role_id'=>2

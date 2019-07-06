@@ -1,7 +1,5 @@
- <!-- Bootstrap Core CSS -->
- <link href="{{asset('css/app.css')}}" rel="stylesheet">
-
- <link href="{{asset('css/libs.css')}}" rel="stylesheet">
+@extends('layouts.Admin')
+@section('content')
 
 <h1>EDIT Instructor</h1>
 {!! Form::model($user,['method' => 'PATCH', 'action'=> ['AdminInstructorsController@update',$user->id]]) !!}
@@ -49,4 +47,5 @@
 {!! Form::submit('Update Instructor', ['class' => 'btn btn-info']) !!}
 
 {!! Form::close()!!}
+@endsection
 

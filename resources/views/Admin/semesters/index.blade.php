@@ -1,7 +1,5 @@
- <!-- Bootstrap Core CSS -->
- <link href="{{asset('css/app.css')}}" rel="stylesheet">
-
- <link href="{{asset('css/libs.css')}}" rel="stylesheet">
+@extends('layouts.Admin')
+@section('content')
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +13,7 @@
 <body>
 
 <div class="container"> 
+        <h1>ADD SEMETER</h1> 
   <div class="col-sm-6">
         {!! Form::open(['method' => 'POST', 'action'=> 'AdminSemestersController@store']) !!}
         
@@ -71,3 +70,4 @@
 
 </body>
 </html>
+@endsection

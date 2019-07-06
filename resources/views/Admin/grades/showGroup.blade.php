@@ -1,5 +1,6 @@
-@extends('layouts.app')
-@section('content')
+@extends('layouts.Admin')
+ @section('content')
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +18,7 @@
         Name: {{$group->name}}<br><br>
         Course: {{$group->course_language->course->description.' '.$group->course_language->language->name}}<br><br>
     </h3>
-        {!! Form::open(['method' => 'POST', 'action'=> ['InstructorController@fillGrades',$group->id]]) !!}
+        {!! Form::open(['method' => 'POST', 'action'=> ['AdminAttendanceAndGradesController@fillGrades',$group->id]]) !!}
         <div class="form-group">
           {!! Form::label('exam', 'Exam') !!}
           {!! Form::select('exam', array(''=>'Choose an Exam') + $exams, ['class' => 'form-control']) !!}
@@ -39,6 +40,7 @@
                     <th>Language</th>
                     <th>edit Grades</th>
                     <th>edit Attendance</th>
+
                   </tr>
                 </thead>
                 <tbody>
@@ -50,13 +52,13 @@
                                 <td>{{$student->user->fileNumber}}</td>
                                 <td>{{$student->academic_year}}
                                 <td>{{$student->language->name}}</td>
-                                <td><a href="{{url('groupInfo/'.$group->id.'/'.$student->id.'/edit')}}">Edit Grades</a></td>
-                                <td><a href="{{url('groupInfo/'.$group->id.'/'.$student->id.'/editAttendance')}}">Edit Attendance</a></td>
+                                <td><a href="{{url('admin/groupInfo/'.$group->id.'/'.$student->id.'/edit')}}">Edit Grades</a></td>
+                                <td><a href="{{url('admin/groupInfo/'.$group->id.'/'.$student->id.'/editAttendance')}}">Edit Attendance</a></td>
                             </tr>
                         @endforeach
                     @endif    
                 </tbody>
         </table>
 </div>
-@endsection
+@endsection('content')
 

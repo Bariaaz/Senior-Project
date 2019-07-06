@@ -19,6 +19,7 @@ class AdminInstructorsController extends Controller
     public function index()
     {
         $users=User::where('role_id', 3)->get();
+        
         return view('Admin.instructors.index', compact('users'));
     }
 
@@ -29,7 +30,8 @@ class AdminInstructorsController extends Controller
      */
     public function create()
     {
-        $majors=Major::pluck('name', 'id')->all();
+        $majors = Major::pluck('name', 'id')->all();
+        
         return view('Admin.instructors.create', compact('majors'));
     }
 

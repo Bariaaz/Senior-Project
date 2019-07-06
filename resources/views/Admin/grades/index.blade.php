@@ -14,40 +14,29 @@
 <body>
 
 <div class="container">
-  <h2>Instructors Available</h2>
-  {!! Form::open(['method' => 'POST', 'action'=> ['AdminGroupsController@saveInstructorsAssigned',$group_id]]) !!}           
+  <h2>Groups</h2>           
   <table class="table">
     <thead>
       <tr>
         <th>Name</th>
-        <th>Major</th>
-        <th>#</th>
+        <th>Course</th>
+        <th>language</th>
       </tr>
     </thead>
     <tbody>
-        @if($instructors)
-            @foreach($instructors as $i)
+        @if($groups)
+            @foreach($groups as $group)
                 <tr>
-                    <td>{{$i->fullname}}</td>
-                    <td>{{$i->major->name}}</td>
-                    <td>
-                      <div class="form-group">
-                        {!! Form::checkbox('id[]', $i->id, false) !!}
-                      </div>
-                    </td>
+                    <td><a href="{{url('admin/groupInfo/'.$group->id)}}">{{$group->name}}</a></td>
+                    <td>{{$group->course_language->course->description}}</td>
+                    <td>{{$group->course_language->language->name}}</td>
                 </tr>
             @endforeach
-        @endif 
-        {!! Form::submit('Save', ['class' => 'btn btn-info']) !!}   
+        @endif    
     </tbody>
   </table>
 </div>
-<div>
 
-{!! Form::close()!!}
-</div>
 </body>
 </html>
 @endsection('content')
-
-

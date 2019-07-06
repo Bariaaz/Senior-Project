@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
+    //const STUDENT = 'Student';
 
     /**
      * The attributes that are mass assignable.
@@ -25,8 +26,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+         'password','remember_token',
     ];
+
 
     public function student(){
         return $this->hasOne('App\Student');
@@ -38,5 +40,17 @@ class User extends Authenticatable
 
     public function role(){
         return $this->belongsTo('App\Role');
+    }
+
+    public function isAdmin(){
+        return $this->is_active && $this->role->name == "Administrator";
+    }
+
+    public function isInstructor(){
+        return $this->is_active && $this->role->name == "Instructor";
+    }   
+
+    public function isStudent(){
+        return $this->is_active && $this->role->name == "Student";
     }
 }

@@ -1,7 +1,5 @@
- <!-- Bootstrap Core CSS -->
- <link href="{{asset('css/app.css')}}" rel="stylesheet">
-
- <link href="{{asset('css/libs.css')}}" rel="stylesheet">
+@extends('layouts.Admin')
+@section('content')
 
 <h1>ADD SEMETER</h1>
 {!! Form::open(['method' => 'POST', 'action'=> 'AdminSemestersController@store']) !!}

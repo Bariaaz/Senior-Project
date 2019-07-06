@@ -1,3 +1,6 @@
+@extends('layouts.Admin')
+@section('content')
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +23,7 @@
       </tr>
     </thead>
     <tbody>
-     {!! Form::open(['method' => 'Post', 'action'=> ['InstructorController@updateGrades',$student->id,$group->id]]) !!}
+     {!! Form::open(['method' => 'Post', 'action'=> ['AdminAttendanceAndGradesController@updateGrades',$student->id]]) !!}
         <tr>
             <td>{{$student->Foreign_fullname}}</td>
             @foreach($exams as $exam)
@@ -28,7 +31,7 @@
             @endforeach
         </tr>
 
-     <td colspan="3">
+     <td colspan="5">
      {!! Form::submit('SAVE', ['class'=>'btn btn-primary btn-block']) !!}
       {!! Form::close() !!}
       </td>
@@ -39,3 +42,4 @@
   </div>
 </body>
 </html>
+@endsection('content')

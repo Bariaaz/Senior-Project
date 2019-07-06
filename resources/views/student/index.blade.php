@@ -12,7 +12,7 @@
 <body>
 
 <div class="container"> 
-  <h2>Hello {{$student->Foreign_fullname}} here where your shit is displayed</h2><br>         
+  <h2>Hello {{$student->Foreign_fullname}}, here where your stuff is displayed</h2><br>         
   <table class="table">
     <thead>
       <tr>
@@ -42,7 +42,7 @@
                     <td>{{$languageGrade->exam->course_language->course->course_code}}</td>
                     <td>{{$languageGrade->exam->course_language->course->description}}</td>
                     <td>{{$languageGrade->exam->course_language->course->semester->display_name}}</td>
-                    <td></td>
+                    <td>All</td>
                     <td>{{$languageGrade->created_at}}</td>
                     <td>{{$languageGrade->grade}}</td>
                 </tr>

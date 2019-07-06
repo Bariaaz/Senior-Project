@@ -15,7 +15,7 @@ class StudentController extends Controller
         $grades=$student->grades;
         $sum=0;
         foreach($grades as $key=>$grade){
-            if($grade->exam->course_language->course->major->name==="Language" && $grade->is_session_one==1){
+            if($grade->exam->course_language->course->major->name=="Language" && $grade->exam->is_session_one==1){
                 $grades->forget($key);
                 $student_id=$grade->student_id;
                 $exam_id=$grade->exam_id;
@@ -25,6 +25,7 @@ class StudentController extends Controller
                     'student_id'=>$student_id,
                     'exam_id'=>$exam_id,
                     'created_at'=>$date,
+                    'updated_at'=>$date,
                     'grade'=>$sum
                 ]);
             }

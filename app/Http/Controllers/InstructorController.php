@@ -50,7 +50,6 @@ class InstructorController extends Controller
     }
 
     public function saveAttendance(Request $request,$group_id){
-        $input=$request->all();
         $session=Session::create([
             'session_date'=>Input::get('session_date'),
             'note'=>Input::get('note'),
@@ -61,16 +60,28 @@ class InstructorController extends Controller
         ]);
         $group=Group::find($group_id);
         $students=$group->students;
-        foreach($students as $student){
-            if(in_array($student->id,$request->students_id)){
-                $attendance=Attendance::create([
-                    'student_id'=>$student->id,
-                    'attended_int'=>1,
-                    'note'=>"test",
-                    'session_id'=>$session->id
-                ]);
+        
+        if(isset($request->students_id)){
+            foreach($students as $student){
+                if(in_array($student->id,$request->students_id)){
+                    $attendance=Attendance::create([
+                        'student_id'=>$student->id,
+                        'attended_int'=>1,
+                        'note'=>"test",
+                        'session_id'=>$session->id
+                    ]);
 
-            }else{
+                }else{
+                    $attendance=Attendance::create([
+                        'student_id'=>$student->id,
+                        'attended_int'=>0,
+                        'note'=>"test",
+                        'session_id'=>$session->id
+                    ]);
+                }
+            }
+        }else{
+            foreach($students as $student){
                 $attendance=Attendance::create([
                     'student_id'=>$student->id,
                     'attended_int'=>0,
@@ -82,12 +93,62 @@ class InstructorController extends Controller
         return redirect('instructor/groups');
     }
 
+    public function editAttendance($group_id, $student_id){
+        $student=Student::find($student_id);
+        $group=Group::find($group_id);
+        $att=Attendance::where(function($q) use($group_id,$student){
+            $q->whereHas('student', function($q) use($student){
+                $q->where('id',$student->id);
+            })->whereHas('session', function($q) use($group_id){
+                $q->where('group_id',$group_id);
+            });
+        })->get();
+        return view('Instructor.editAttendance',compact('att','student','group'));
+    }
+
+    public function updateAttendance(Request $request, $student_id, $group_id){
+        $student=Student::find($student_id);
+        $att=Attendance::where(function($q) use($group_id,$student){
+            $q->whereHas('student', function($q) use($student){
+                $q->where('id',$student->id);
+            })->whereHas('session', function($q) use($group_id){
+                $q->where('group_id',$group_id);
+            });
+        })->get();
+        
+        if(isset($request->attendanceid)){
+            foreach($att as $a){
+                if(in_array($a->id,$request->attendanceid)){
+                    $attendanceToUpdate=Attendance::find($a->id);
+                    $attendanceToUpdate->attended_int=1;
+                    $attendanceToUpdate->save();
+                }else{
+                    $attendanceToUpdate=Attendance::find($a->id);
+                    $attendanceToUpdate->attended_int=0;
+                    $attendanceToUpdate->save();
+                }
+            }
+        }else{
+            foreach($att as $a){
+                $attendanceToUpdate=Attendance::find($a->id);
+                    $attendanceToUpdate->attended_int=0;
+                    $attendanceToUpdate->save();
+            }
+        }
+        return redirect('groupInfo/'.$group_id);
+    }
+
     public function fillGrades(Request $request,$group_id){
         $input=$request->all();
         $group=Group::find($group_id);
-        $students=$group->students;
+        $students=new Collection();
+        $groupstudents=$group->students;
         $course=$group->course_language;
         $exam=Exam::find($request->exam);
+        foreach($groupstudents as $student){
+            if(!Grade::where('student_id',$student->id)->where('exam_id',$exam->id)->exists())
+                $students->push($student);
+        }
         return view('Instructor.fillGrades',compact('students','exam','group_id'));
     }
 
@@ -128,10 +189,10 @@ class InstructorController extends Controller
             if($grade->exam->is_written_exam==0)
                 $exams->push($grade->exam);
         }//all grades belonging to this student in this course along with their exams information
-        return view('Instructor.editGrades', compact('grades','exams','student'));
+        return view('Instructor.editGrades', compact('grades','exams','student','group'));
     }
 
-    public function updateGrades(Request $request, $student_id){
+    public function updateGrades(Request $request, $student_id, $group_id){
         $input=$request->all();
         foreach($input['grades'] as $exam_id=>$gradeint){
                 $grade=Grade::where('exam_id',$exam_id)->where('student_id',$student_id)->first();
@@ -140,7 +201,7 @@ class InstructorController extends Controller
                 $grade->grade=$gradeint;
                 $grade->save();
         }
-        return redirect('instructor/groups');
+        return redirect('groupInfo/'.$group_id);
     }
     
 }

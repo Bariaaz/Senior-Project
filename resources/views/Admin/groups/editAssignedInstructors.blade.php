@@ -1,7 +1,6 @@
- <!-- Bootstrap Core CSS -->
- <link href="{{asset('css/app.css')}}" rel="stylesheet">
+@extends('layouts.Admin')
+@section('content')
 
- <link href="{{asset('css/libs.css')}}" rel="stylesheet">
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,5 +48,6 @@
 </div>
 </body>
 </html>
+@endsection('content')
 
 
