@@ -14,16 +14,19 @@
 
 <div class="container">
   <h2>Groups</h2>           
-  <table class="table">
+  <table class="table table-bordered">
     <thead>
       <tr>
         <th>Name</th>
         <th>Course</th>
         <th>language</th>
-        <th>assign students</th>
-        <th>Edit assigned students</th>
-        <th>assign Instructors</th>
-        <th>Edit assigned Instructors</th>
+        <th>academic year</th>
+        <th>Assign students</th>
+        <th>Assigned students</th>
+        <th>Assign Instructors</th>
+        <th>Assigned Instructors</th>
+        <th>Assign Scheduals</th>
+        <th>Assigned Scheduals</th>
       </tr>
     </thead>
     <tbody>
@@ -33,10 +36,13 @@
                     <td><a href="{{route('groups.edit',$group->id)}}">{{$group->name}}</a></td>
                     <td>{{$group->course_language->course->description}}</td>
                     <td>{{$group->course_language->language->name}}</td>
+                    <td>{{$group->year->year}}</td>
                     <td><a href="{{url('admin/groups/'.$group->id.'/assignStudents')}}">Assign Students</a></td>
-                    <td><a href="{{url('admin/groups/'.$group->id.'/editAssignedStudents')}}">Edit Assigned students</a></td>
+                    <td><a href="{{url('admin/groups/'.$group->id.'/editAssignedStudents')}}">Assigned students</a></td>
                     <td><a href="{{url('admin/groups/'.$group->id.'/assignInstructors')}}">Assign Instructors</a></td>
-                    <td><a href="{{url('admin/groups/'.$group->id.'/editAssignedInstructors')}}">Edit Assigned Instructors</a></td>
+                    <td><a href="{{url('admin/groups/'.$group->id.'/editAssignedInstructors')}}">Assigned Instructors</a></td>
+                    <td><a href="{{url('admin/groups/'.$group->id.'/assignScheduals')}}">Assign Scheduals</a></td>
+                    <td><a href="{{url('admin/groups/'.$group->id.'/editAssignedScheduals')}}">Assigned Scheduals</a></td>
                 </tr>
             @endforeach
         @endif    

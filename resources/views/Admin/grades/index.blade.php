@@ -21,6 +21,7 @@
         <th>Name</th>
         <th>Course</th>
         <th>language</th>
+        <th>Year</th>
       </tr>
     </thead>
     <tbody>
@@ -30,6 +31,7 @@
                     <td><a href="{{url('admin/groupInfo/'.$group->id)}}">{{$group->name}}</a></td>
                     <td>{{$group->course_language->course->description}}</td>
                     <td>{{$group->course_language->language->name}}</td>
+                    <td>{{$group->year->year}}</td>
                 </tr>
             @endforeach
         @endif    

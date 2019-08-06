@@ -8,6 +8,8 @@ use App\Major;
 use Illuminate\Support\Facades\Input;
 use App\Instructor;
 use App\CourseLanguage;
+use App\Year;
+
 
 class AdminInstructorsController extends Controller
 {
@@ -127,20 +129,22 @@ class AdminInstructorsController extends Controller
 
     public function fetchCourses($id){
         $s=Instructor::find($id);
-        if($s->major_id==2){
-            $courses=CourseLanguage::where(function($q) use($s,$id){
-                $q->whereHas('course', function($q) use($s){
-                    $q->where('major_id', 2);
-                })->whereDoesntHave('instructors', function($q) use ($id){
-                    $q->where('instructor_id', $id);
+        $year=Year::where('current_year',1)->first();
+        $langMajor=Major::where('name','Language')->first();
+        if($s->major_id==$langMajor->id){
+            $courses=CourseLanguage::where(function($q) use($s,$id,$langMajor,$year){
+                $q->whereHas('course', function($q) use($s,$langMajor){
+                    $q->where('major_id', $langMajor->id);
+                })->whereDoesntHave('instructors', function($q) use ($id,$year){
+                    $q->where('instructor_id', $id)->where('year_id',$year->id);
                 });
             })->get();
         }else{
-            $courses=CourseLanguage::where(function($q) use($s,$id){
-                $q->whereHas('course', function($q) use($s){
-                    $q->where('major_id', '!=' , 2);
-                })->whereDoesntHave('instructors', function($q) use ($id){
-                    $q->where('instructor_id', $id);
+            $courses=CourseLanguage::where(function($q) use($s,$id,$langMajor,$year){
+                $q->whereHas('course', function($q) use($s,$langMajor){
+                    $q->where('major_id', '!=' , $langMajor->id);
+                })->whereDoesntHave('instructors', function($q) use ($id,$year){
+                    $q->where('instructor_id', $id)->where('year_id',$year->id);
                 });
             })->get();
         }
@@ -150,9 +154,10 @@ class AdminInstructorsController extends Controller
 
     public function saveCoursesAssigned(Request $request,$instructor_id){
         $instructor=Instructor::find($instructor_id);
+        $currentyear=Year::where('current_year',1)->first();
         foreach($request->id as $coursechoiceId){
             $courselanguage=CourseLanguage::find($coursechoiceId);
-            $instructor->courses()->attach($courselanguage);
+            $instructor->courses()->attach($courselanguage,array('year_id'=>$currentyear->id));
         }
         return redirect('admin/instructors');
         

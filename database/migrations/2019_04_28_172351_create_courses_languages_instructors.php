@@ -17,6 +17,8 @@ class CreateCoursesLanguagesInstructors extends Migration
             $table->increments('id')->unsigned();
             $table->unsignedInteger('instructor_id');
             $table->unsignedInteger('course_language_id');
+            $table->unsignedInteger('year_id');
+            $table->foreign('year_id')->references('id')->on('years')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('instructor_id')->references('id')->on('instructors')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('course_language_id')->references('id')->on('course_language')->onDelete('cascade')->onUpdate('cascade');
         });

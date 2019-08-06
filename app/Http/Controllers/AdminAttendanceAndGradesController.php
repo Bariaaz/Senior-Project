@@ -68,6 +68,8 @@ class AdminAttendanceAndGradesController extends Controller
     }
 
     public function storeGrades(Request $request,$group_id){
+        $group=Group::find($group_id);
+        $groupYear=$group->year;
         $input=$request->all();
         foreach($input['grades'] as $student_id=>$exams){
             foreach($exams as $exam_id=>$grade){
@@ -75,6 +77,7 @@ class AdminAttendanceAndGradesController extends Controller
                     'student_id'=>$student_id,
                     'exam_id'=>$exam_id,
                     'grade'=>$grade,
+                    'year_id'=>$groupYear->id
                 ]);
                 $grade->save();
             }

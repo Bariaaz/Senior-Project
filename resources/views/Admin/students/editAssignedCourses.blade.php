@@ -1,5 +1,6 @@
 @extends('layouts.Admin')
 @section('content')
+<?php use App\Year;?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +23,7 @@
         <th>Course description</th>
         <th>Semester</th>
         <th>Academic Year</th>
+        <th> Year </th>
         <th>#</th>
       </tr>
     </thead>
@@ -33,6 +35,8 @@
                     <td>{{$course->course->description}}</td>
                     <td>{{$course->course->semester->display_name}}</td>
                     <td>{{$course->course->semester->academic_year}}</td>
+                    <?php $year=Year::find($course->pivot->year_id);?>
+                    <td>{{$year->year}}</td>
                     <td>
                       <div class="form-group">
                         {!! Form::checkbox('id[]', $course->id, false) !!}

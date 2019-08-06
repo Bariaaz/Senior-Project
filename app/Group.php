@@ -8,8 +8,7 @@ class Group extends Model
 {
     protected $fillable=[
         'name', 'course_language_id',
-        'day_of_week', 'starting_time',
-        'ending_time'
+        'year_id'
     ];
     public function course_language(){
         return $this->belongsTo('App\CourseLanguage');
@@ -25,5 +24,13 @@ class Group extends Model
 
     public function sessions(){
         return $this->hasMany('App\Session');
+    }
+
+    public function scheduals(){
+        return $this->belongsToMany('App\Schedual');
+    }
+
+    public function year(){
+        return $this->belongsTo('App\Year');
     }
 }

@@ -56,7 +56,7 @@
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-user fa-fw"></i> {{Auth::user()->username}} <i class="fa fa-caret-down"></i>
+                  <i class="fa fa-user fa-fw"></i><i class="fa fa-caret-down"></i>
               </a>
               <ul class="dropdown-menu dropdown-user">
                   <li>
@@ -83,8 +83,7 @@
       <div class="user-panel">
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-        <li class="header">MAIN NAVIGATION</li>
-
+        <!-- Users subList -->
         <li class="treeview">
           <a href="#">
             <i class="fa fa-share"></i> <span>Users</span>
@@ -102,6 +101,7 @@
                     <ul class="treeview-menu">
                       <li><a href="{{ url('admin/students') }}"><i class="fa fa-circle-o"></i>All Students</a></li>
                       <li><a href="{{ url('admin/students/create') }}"><i class="fa fa-circle-o"></i>Add Student</a></li>
+                      <li><a href="{{ url('admin/studentSearch') }}"><i class="fa fa-circle-o"></i>Search</a></li>
                     </ul>
                 </li>
               <li>
@@ -128,6 +128,8 @@
               </li>
             </ul>
 
+
+            <!-- Courses SubList -->
             <li class="treeview">
                 <a href="#">
                   <i class="fa fa-dashboard"></i> <span>Courses</span>
@@ -141,19 +143,8 @@
                 </ul>
               </li>
 
-              <li class="treeview">
-                  <a href="#">
-                    <i class="fa fa-dashboard"></i> <span>Semesters</span>
-                    <span class="pull-right-container">
-                      <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                  </a>
-                  <ul class="treeview-menu">
-                    <li><a href="{{ url('admin/semesters') }}"><i class="fa fa-circle-o"></i>All Semesters</a></li>
-                  </ul>
-                </li>
-
-                <li class="treeview">
+              <!-- Groups SubList -->
+                  <li class="treeview">
                     <a href="#">
                       <i class="fa fa-dashboard"></i> <span>Groups</span>
                       <span class="pull-right-container">
@@ -163,9 +154,21 @@
                     <ul class="treeview-menu">
                       <li><a href="{{ url('admin/groups') }}"><i class="fa fa-circle-o"></i>All Groups</a></li>
                       <li><a href="{{ url('admin/groups/create') }}"><i class="fa fa-circle-o"></i>Create Group</a></li>
+                      <li>
+                        <a href="#"><i class="fa fa-circle-o"></i>Scheduals
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="{{ url('admin/scheduals') }}"><i class="fa fa-circle-o"></i>All Scheduals</a></li>
+                          <li><a href="{{ url('admin/scheduals/create') }}"><i class="fa fa-circle-o"></i>Add Schedual</a></li>
+                        </ul>
+                      </li>
                     </ul>
                   </li>
 
+                  <!-- Exams SubList -->
                   <li class="treeview">
                         <a href="#">
                           <i class="fa fa-dashboard"></i> <span>Exams</span>
@@ -179,6 +182,22 @@
                         </ul>
                   </li>
                   
+                  <!-- Years SubList -->
+                  <li class="treeview">
+                      <a href="#">
+                        <i class="fa fa-dashboard"></i> <span>Years</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                      </a>
+                      <ul class="treeview-menu">
+                        <li><a href="{{ url('admin/years') }}"><i class="fa fa-circle-o"></i>All Years</a></li>
+                        <li><a href="{{ url('admin/years/create') }}"><i class="fa fa-circle-o"></i>Add Year</a></li>
+                      </ul>
+                </li>
+                
+                  
+                  <!-- Grades section -->
                   <li class="treeview">
                     <a href="#">
                       <i class="fa fa-dashboard"></i> <span>Grades</span>
@@ -190,6 +209,21 @@
                       <li><a href="{{ url('admin/groupsGrades') }}"><i class="fa fa-circle-o"></i>All Groups</a></li>
                     </ul>
                 </li>  
+                 
+                <!-- Semesters/Majors/Languages/Years -->
+                <li class="treeview">
+                  <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Others</span>
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="{{ url('admin/majors') }}"><i class="fa fa-circle-o"></i>Majors</a></li>
+                    <li><a href="{{ url('admin/languages') }}"><i class="fa fa-circle-o"></i>Languages</a></li>
+                    <li><a href="{{ url('admin/semesters') }}"><i class="fa fa-circle-o"></i>Semesters</a></li>
+                  </ul>
+                </li>
 
 
 

@@ -26,7 +26,7 @@ class Student extends Model
     }
 
     public function courses(){
-        return $this->belongsToMany('App\CourseLanguage');
+        return $this->belongsToMany('App\CourseLanguage')->withPivot('year_id');
     }
 
     public function groups(){

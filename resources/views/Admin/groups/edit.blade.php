@@ -14,24 +14,10 @@
         {!! Form::label('course_language_id', 'Course') !!}
         {!! Form::select('course_language_id', array('default'=>'Choose a course') + $courses, old('course_language_id',$group->course_language_id), ['class' => 'form-control']) !!}
     </div>
-    
-    <div>
-        <h3>Group Schedual:</h3><br>
-    </div>
-    
+
     <div class="form-group">
-        {!! Form::label('day_of_week', 'Day of week') !!}
-        {!! Form::select('day_of_week', array(''=>'choose a day')+ $weekdays, old('day_of_week',$group->day_of_week), ['class' => 'form-control']) !!}
-    </div>
-    
-    <div class="form-group">
-        {!! Form::label('starting_time', 'Starting time') !!}
-        {!! Form::time('starting_time', null, ['class' => 'form-control']) !!}
-    </div>
-    
-    <div class="form-group">
-        {!! Form::label('ending_time', 'Ending time') !!}
-        {!! Form::time('ending_time', null, ['class' => 'form-control']) !!}
+        {!! Form::label('year_id', 'Academic Year') !!}
+        {!! Form::select('year_id', array('default'=>'Choose The academic year') + $years, old('year_id',$group->year_id), ['class' => 'form-control']) !!}
     </div>
     
     {!! Form::submit('Update Group', ['class' => 'btn btn-info']) !!}

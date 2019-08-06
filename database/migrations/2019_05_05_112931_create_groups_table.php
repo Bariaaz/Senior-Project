@@ -17,11 +17,10 @@ class CreateGroupsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->unsignedInteger('course_language_id');
-            $table->string('day_of_week');
-            $table->time('starting_time');
-            $table->time('ending_time');
+            $table->unsignedInteger('year_id');
             $table->timestamps();
             $table->foreign('course_language_id')->references('id')->on('course_language')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('year_id')->references('id')->on('years')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

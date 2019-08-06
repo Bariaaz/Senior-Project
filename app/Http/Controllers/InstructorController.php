@@ -154,12 +154,15 @@ class InstructorController extends Controller
 
     public function storeGrades(Request $request,$group_id){
         $input=$request->all();
+        $group=Group::find($group_id);
+        $groupYear=$group->year;
         foreach($input['grades'] as $student_id=>$exams){
             foreach($exams as $exam_id=>$grade){
                 $grade=Grade::create([
                     'student_id'=>$student_id,
                     'exam_id'=>$exam_id,
                     'grade'=>$grade,
+                    'year_id'=>$groupYear->id
                 ]);
                 $grade->save();
             }

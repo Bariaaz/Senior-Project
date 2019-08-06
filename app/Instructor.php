@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Instructor extends Model
 {
     protected $fillable=[
-        'fullname','major_id' 
+        'fullname','major_id'
 
     ];
 
@@ -21,7 +21,7 @@ class Instructor extends Model
     }
    
     public function courses(){
-        return $this->belongsToMany('App\CourseLanguage');
+        return $this->belongsToMany('App\CourseLanguage')->withPivot('year_id');
     }
 
     public function groups(){

@@ -7,6 +7,8 @@ use App\CourseLanguage;
 use App\Group;
 use App\Student;
 use App\Instructor;
+use App\Year;
+use App\Schedual;
 
 class AdminGroupsController extends Controller
 {
@@ -33,16 +35,9 @@ class AdminGroupsController extends Controller
         foreach($c as $course){
             $courses[$course->id]=$course->course->description.' '.$course->language->name;
         }
-        $weekdays=[
-            'Monday'=>'Monday',
-            'Tuseday'=>'Tuseday',
-            'Wednesday'=>'Wednesday',
-            'Thursday'=>'Thursday',
-            'Friday'=>'Friday',
-            'Saturday'=>'Saturday'
-        ];
+        $years=Year::pluck('year', 'id')->all();
 
-        return view('Admin.groups.create', compact('courses','weekdays'));
+        return view('Admin.groups.create', compact('courses','years'));
     }
 
     /**
@@ -83,15 +78,10 @@ class AdminGroupsController extends Controller
         foreach($c as $course){
             $courses[$course->id]=$course->course->description.' '.$course->language->name;
         }
-        $weekdays=[
-            'Monday'=>'Monday',
-            'Tuseday'=>'Tuseday',
-            'Wednesday'=>'Wednesday',
-            'Thursday'=>'Thursday',
-            'Friday'=>'Friday',
-            'Saturday'=>'Saturday'
-        ];
-        return view('Admin.groups.edit', compact('courses','weekdays','group'));
+       
+        $years=Year::pluck('year', 'id')->all();
+
+        return view('Admin.groups.edit', compact('courses','group','years'));
     }
 
     /**
@@ -121,11 +111,12 @@ class AdminGroupsController extends Controller
     public function fetchStudents($group_id){
         $group=Group::find($group_id);
         $course=$group->course_language;
-        $students=Student::where(function($q) use($course,$group){
-            $q->whereHas('courses', function($q) use($course){
-                $q->where('course_language_id',$course->id);
-            })->whereDoesntHave('groups', function($q) use($group){
-                $q->where('course_language_id',$group->course_language_id);
+        $year=$group->year;
+        $students=Student::where(function($q) use($course,$group,$year){
+            $q->whereHas('courses', function($q) use($course,$year){
+                $q->where('course_language_id',$course->id)->where('year_id',$year->id);
+            })->whereDoesntHave('groups', function($q) use($group,$year){
+                $q->where('course_language_id',$group->course_language_id)->where('year_id',$year->id);
             });
         })->get();
         return view('Admin.groups.assignStudents',compact('students','group_id'));
@@ -158,9 +149,10 @@ class AdminGroupsController extends Controller
     public function fetchInstructors($group_id){
         $group=Group::find($group_id);
         $course=$group->course_language;
-        $instructors=Instructor::where(function($q) use($course,$group){
-            $q->whereHas('courses', function($q) use($course){
-                $q->where('course_language_id',$course->id);
+        $year=$group->year;
+        $instructors=Instructor::where(function($q) use($course,$group,$year){
+            $q->whereHas('courses', function($q) use($course,$year){
+                $q->where('course_language_id',$course->id)->where('year_id',$year->id);
             })->whereDoesntHave('groups', function($q) use($group){
                 $q->where('group_id',$group->id);
             });
@@ -171,7 +163,7 @@ class AdminGroupsController extends Controller
     public function saveInstructorsAssigned(Request $request, $group_id){
         $group=Group::find($group_id);
         foreach($request->id as $instructorId){
-            $i=Student::find($instructorId);
+            $i=Instructor::find($instructorId);
             $group->instructors()->attach($i,['is_active'=> 1]);
         }
         return redirect('admin/groups');
@@ -191,4 +183,38 @@ class AdminGroupsController extends Controller
         }
         return redirect('admin/groups');
     }
+
+    public function fetchscheduals($group_id){
+        $scheduals=Schedual::where(function($q) use($group_id){
+            $q->whereDoesntHave('groups', function($q) use($group_id){
+                $q->where('group_id',$group_id);
+            });
+        })->get();
+        return view('Admin.groups.assignScheduals',compact('scheduals','group_id'));
+    }
+
+    public function saveSchedualsAssigned(Request $request, $group_id){
+        $group=Group::find($group_id);
+        foreach($request->id as $sId){
+            $i=Schedual::find($sId);
+            $group->scheduals()->attach($i);
+        }
+        return redirect('admin/groups');
+    }
+
+    public function editAssignedScheduals($group_id){
+        $group=Group::find($group_id);
+        $scheduals=$group->scheduals;
+        return view('Admin.groups.editAssignedScheduals',compact('scheduals', 'group'));
+    }
+
+    public function updateAssignedScheduals(Request $request, $group_id){
+        $group=Group::find($group_id);
+        foreach($request->id as $sId){
+            $i=Instructor::find($sId);
+            $group->scheduals()->detach($i);
+        }
+        return redirect('admin/groups');
+    }
+
 }
