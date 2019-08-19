@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
-use App\User;
-use App\CourseLanguage;
-use App\Attendance;
-use App\Grade;
+namespace LU\Http\Controllers;
+use LU\User;
+use LU\CourseLanguage;
+use LU\Attendance;
+use LU\Grade;
 
 use Illuminate\Http\Request;
 

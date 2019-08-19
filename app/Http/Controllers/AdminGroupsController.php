@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace LU\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\CourseLanguage;
-use App\Group;
-use App\Student;
-use App\Instructor;
-use App\Year;
-use App\Schedual;
+use LU\CourseLanguage;
+use LU\Group;
+use LU\Student;
+use LU\Instructor;
+use LU\Year;
+use LU\Schedual;
+use LU\Http\Requests\CreateGroupRequest;
 
 class AdminGroupsController extends Controller
 {
@@ -46,7 +47,7 @@ class AdminGroupsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateGroupRequest $request)
     {
         $group=Group::create($request->all());
         $group->save();

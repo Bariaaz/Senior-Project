@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace LU;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,18 +13,18 @@ class Instructor extends Model
 
 
     public function user(){
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('LU\User');
     }
 
     public function major(){
-        return $this->belongsTo('App\Major');
+        return $this->belongsTo('LU\Major');
     }
    
     public function courses(){
-        return $this->belongsToMany('App\CourseLanguage')->withPivot('year_id');
+        return $this->belongsToMany('LU\CourseLanguage')->withPivot('year_id');
     }
 
     public function groups(){
-        return $this->belongsToMany('App\Group')->withPivot(['is_active', 'start_date', 'leave_date']);
+        return $this->belongsToMany('LU\Group')->withPivot(['is_active', 'start_date', 'leave_date']);
     }
 }

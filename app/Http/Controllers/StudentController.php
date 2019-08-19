@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace LU\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
-use App\Grade;
+use LU\Grade;
 
 class StudentController extends Controller
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace LU;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,10 +15,10 @@ class Exam extends Model
     protected $dates = ['exam_date'];
 
     public function course_language(){
-        return $this->belongsTo('App\CourseLanguage');
+        return $this->belongsTo('LU\CourseLanguage');
     }
 
     public function grades(){
-        return $this->hasMany('App\Grade');
+        return $this->hasMany('LU\Grade');
     }
 }

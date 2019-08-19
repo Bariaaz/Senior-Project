@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace LU;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,10 +11,10 @@ class Language extends Model
     ];
 
     public function courses(){
-        return $this->belongsToMany('App\Course')->withPivot('id');
+        return $this->belongsToMany('LU\Course')->withPivot('id');
     }
     
     public function students(){
-        return $this->hasMany('App\Student');
+        return $this->hasMany('LU\Student');
     }
 }

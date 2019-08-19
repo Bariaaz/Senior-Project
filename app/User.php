@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace LU;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -31,15 +31,15 @@ class User extends Authenticatable
 
 
     public function student(){
-        return $this->hasOne('App\Student');
+        return $this->hasOne('LU\Student');
     }
 
     public function instructor(){
-        return $this->hasOne('App\Instructor');
+        return $this->hasOne('LU\Instructor');
     }
 
     public function role(){
-        return $this->belongsTo('App\Role');
+        return $this->belongsTo('LU\Role');
     }
 
     public function isAdmin(){

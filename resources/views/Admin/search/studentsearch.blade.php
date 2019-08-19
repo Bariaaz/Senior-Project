@@ -1,7 +1,7 @@
 @extends('layouts.Admin')
 @section('content')
 <!DOCTYPE html>
-<?php use App\Year;?>
+<?php use LU\Year;?>
 <html>
 <head>
     <meta charset="utf-8">
@@ -30,13 +30,6 @@
 						<div class="col-md-8">
 						
 						{!! Form::select('course', array(''=>'course')+$courses,'', ['class' => 'form-control']) !!}
-						</div>
-				</div>
-				{!! Form::label('options', 'Filter Results :') !!}
-				<div style="flex:1">
-						
-						<div class="col-md-8">
-						{!! Form::select('filter', array(''=>'filter')+$filters,'', ['class' => 'form-control']) !!}
 						</div>
 				</div>
 				<div style="flex:1">

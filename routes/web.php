@@ -34,7 +34,7 @@ $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
 
 //Admin Routes
-//Route::group(['middleware'=>'admin'], function(){
+Route::group(['middleware'=>'admin'], function(){
     //CRUD functionalities Routes 
     Route::resource('admin/instructors','AdminInstructorsController');
     Route::resource('admin/courses','AdminCoursesController');
@@ -87,12 +87,51 @@ $this->post('password/reset', 'Auth\ResetPasswordController@reset');
     Route::get('admin/groupInfo/{group_id}/{student_id}/editAttendance','AdminAttendanceAndGradesController@editAttendance');
     Route::post('admin/groupInfo/edit/{student_id}/{group_id}/updateAttendance','AdminAttendanceAndGradesController@updateAttendance');
 
+    //year routes
+    Route::get('admin/years','AdminYearsController@index');
+    Route::get('admin/years/create','AdminYearsController@create');
+    Route::post('admin/years','AdminYearsController@store');
+    Route::get('admin/years/{year_object}/edit','AdminYearsController@edit');
+    Route::PATCH('admin/year/{year_id}','AdminYearsController@update');
+
+    //Admins routes
+    Route::get('admin/admins','AdminController@index');
+    Route::get('admin/admins/create','AdminController@create');
+    Route::post('admin/admins','AdminController@store');
+    Route::get('admin/admins/{id}/edit','AdminController@edit');
+    Route::PATCH('admin/admins/{id}','AdminController@update');
+
+    //Scheduals Routes
+    Route::get('admin/scheduals','AdminSchedualsController@index');
+    Route::get('admin/scheduals/create','AdminSchedualsController@create');
+    Route::post('admin/scheduals','AdminSchedualsController@store');
+    Route::get('admin/scheduals/{schedual_object}/edit','AdminSchedualsController@edit');
+    Route::PATCH('admin/scheduals/{s_id}','AdminSchedualsController@update');
+
+
+    //Majors Routes 
+    Route::get('admin/majors', 'AdminMajorsController@indexAndCreate');
+    Route::post('admin/majors', 'AdminMajorsController@store');
+    Route::get('admin/majors/{major}/edit', 'AdminMajorsController@edit');
+    Route::get('admin/majors/{major_id}', 'AdminMajorsController@update');
+
+    //Languages Routes 
+    Route::get('admin/languages', 'AdminLanguagesController@indexAndCreate');
+    Route::post('admin/languages', 'AdminLanguagesController@store');
+    Route::get('admin/languages/{languages}/edit', 'AdminLanguagesController@edit');
+    Route::get('admin/languages/{languages_id}', 'AdminLanguagesController@update');
+
+    //search Routes
+    Route::get('admin/studentSearch', 'AdminSearchController@searchStudent');
+
+
+
     Route::get('admin',function(){
         return view('Admin.index');
     });
 
 
-//});
+});
 
 //Instructor Section
 Route::group(['middleware'=>'instructor'], function(){
@@ -116,36 +155,6 @@ Route::group(['middleware'=> 'student'], function(){
     //Student Routes
     Route::get('student','StudentController@fetchGradesAndAttendance');
 });
-
-//year routes
-Route::get('admin/years','AdminYearsController@index');
-Route::get('admin/years/create','AdminYearsController@create');
-Route::post('admin/years','AdminYearsController@store');
-Route::get('admin/years/{year_object}/edit','AdminYearsController@edit');
-Route::PATCH('admin/year/{year_id}','AdminYearsController@update');
-
-//Scheduals Routes
-Route::get('admin/scheduals','AdminSchedualsController@index');
-Route::get('admin/scheduals/create','AdminSchedualsController@create');
-Route::post('admin/scheduals','AdminSchedualsController@store');
-Route::get('admin/scheduals/{schedual_object}/edit','AdminSchedualsController@edit');
-Route::PATCH('admin/scheduals/{s_id}','AdminSchedualsController@update');
-
-
-//Majors Routes 
-Route::get('admin/majors', 'AdminMajorsController@indexAndCreate');
-Route::post('admin/majors', 'AdminMajorsController@store');
-Route::get('admin/majors/{major}/edit', 'AdminMajorsController@edit');
-Route::get('admin/majors/{major_id}', 'AdminMajorsController@update');
-
-//Languages Routes 
-Route::get('admin/languages', 'AdminLanguagesController@indexAndCreate');
-Route::post('admin/languages', 'AdminLanguagesController@store');
-Route::get('admin/languages/{languages}/edit', 'AdminLanguagesController@edit');
-Route::get('admin/languages/{languages_id}', 'AdminLanguagesController@update');
-
-//search Routes
-Route::get('admin/studentSearch', 'AdminSearchController@searchStudent');
 
 
 

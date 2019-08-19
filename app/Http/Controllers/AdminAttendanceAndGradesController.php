@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace LU\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use App\Group;
-use App\Grade;
-use App\Exam;
-use App\Student;
+use LU\Group;
+use LU\Grade;
+use LU\Exam;
+use LU\Student;
 use Illuminate\Support\Facades\Input;
-use App\Session;
-use App\Attendance;
+use LU\Session;
+use LU\Attendance;
 
 
 class AdminAttendanceAndGradesController extends Controller
@@ -26,7 +26,7 @@ class AdminAttendanceAndGradesController extends Controller
         $exams=Exam::where(function($q) use ($course){
             $q->wherehas('course_language', function($q) use($course){
                 $q->where('id',$course->id);
-            })->where('is_written_exam',1);
+            });
         })->get()->pluck('name', 'id')->toArray();
         $students=$group->students;
         return view('Admin.grades.showGroup', compact('group','students','exams'));
@@ -68,18 +68,20 @@ class AdminAttendanceAndGradesController extends Controller
     }
 
     public function storeGrades(Request $request,$group_id){
-        $group=Group::find($group_id);
-        $groupYear=$group->year;
-        $input=$request->all();
-        foreach($input['grades'] as $student_id=>$exams){
-            foreach($exams as $exam_id=>$grade){
-                $grade=Grade::create([
-                    'student_id'=>$student_id,
-                    'exam_id'=>$exam_id,
-                    'grade'=>$grade,
-                    'year_id'=>$groupYear->id
-                ]);
-                $grade->save();
+        if($request->has('grades')){
+            $group=Group::find($group_id);
+            $groupYear=$group->year;
+            $input=$request->all();
+            foreach($input['grades'] as $student_id=>$exams){
+                foreach($exams as $exam_id=>$grade){
+                    $grade=Grade::create([
+                        'student_id'=>$student_id,
+                        'exam_id'=>$exam_id,
+                        'grade'=>$grade,
+                        'year_id'=>$groupYear->id
+                    ]);
+                    $grade->save();
+                }
             }
         }
         return redirect('admin/groupInfo/'.$group_id);

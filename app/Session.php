@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace LU;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,11 +12,11 @@ class Session extends Model
     ];
 
     public function group(){
-        return $this->belongsTo('App\Group');
+        return $this->belongsTo('LU\Group');
     }
     
     public function attendances(){
-        return $this->hasMany('App\Attendance');
+        return $this->hasMany('LU\Attendance');
     }
     
 }

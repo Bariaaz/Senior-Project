@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace LU\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Semester;
-use App\Course;
-use App\Language;
-use App\Major;
+use LU\Semester;
+use LU\Course;
+use LU\Language;
+use LU\Major;
+use LU\Http\Requests\CreateCourseRequest;
 
 class AdminCoursesController extends Controller
 {
@@ -40,7 +41,7 @@ class AdminCoursesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateCourseRequest $request)
     {
         $course=new Course;
         $course->course_code=$request->course_code;

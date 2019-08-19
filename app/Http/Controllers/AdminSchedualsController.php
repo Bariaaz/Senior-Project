@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
-use App\Schedual;
+namespace LU\Http\Controllers;
+use LU\Schedual;
 
 use Illuminate\Http\Request;
+use LU\Http\Requests\CreateSchedualRequest;
 
 class AdminSchedualsController extends Controller
 {
@@ -27,7 +28,7 @@ class AdminSchedualsController extends Controller
         return view('Admin.scheduals.create', compact('weekdays'));
     }
 
-    public function store(Request $request){
+    public function store(CreateSchedualRequest $request){
         $s=Schedual::create($request->all());
         
         return redirect('admin/scheduals');

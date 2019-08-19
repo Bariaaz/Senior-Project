@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace LU;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,12 +11,12 @@ class Grade extends Model
         'grade','year_id','created_at','updated_at'
     ];
     public function student(){
-        return $this->belongsTo('App\Student');
+        return $this->belongsTo('LU\Student');
     }
     public function exam(){
-        return $this->belongsTo('App\Exam');
+        return $this->belongsTo('LU\Exam');
     }
     public function year(){
-        return $this->belongsTo('App\Year');
+        return $this->belongsTo('LU\Year');
     }
 }

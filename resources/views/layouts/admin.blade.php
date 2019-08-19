@@ -122,8 +122,8 @@
                     </span>
                   </a>
                   <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-circle-o"></i>All Admins</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o"></i>Create Admin</a></li>
+                  <li><a href="{{url('admin/admins')}}"><i class="fa fa-circle-o"></i>All Admins</a></li>
+                    <li><a href="{{url('admin/admins/create')}}"><i class="fa fa-circle-o"></i>Create Admin</a></li>
                   </ul>
               </li>
             </ul>

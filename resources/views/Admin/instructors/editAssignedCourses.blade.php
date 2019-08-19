@@ -1,6 +1,6 @@
 @extends('layouts.Admin')
 @section('content')
-<?php use App\Year;?>
+<?php use LU\Year;?>
 
 <!DOCTYPE html>
 <html lang="en">

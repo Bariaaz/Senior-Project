@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace LU\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Year;
+use LU\Year;
+use LU\Http\Requests\CreateYearRequest;
 
 class AdminYearsController extends Controller
 {
@@ -16,7 +17,7 @@ class AdminYearsController extends Controller
         return view('Admin.years.create');
     }
 
-    public function store(Request $request){
+    public function store(CreateYearRequest $request){
         $year=Year::create($request->all());
         
         return redirect('admin/years');

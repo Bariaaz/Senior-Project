@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace LU;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,15 +11,15 @@ class Major extends Model
     ];
 
     public function students(){
-        return $this->hasMany('App\Student');
+        return $this->hasMany('LU\Student');
     }
 
     public function instructors(){
-        return $this->hasMany('App\Instructor');
+        return $this->hasMany('LU\Instructor');
     }
 
     public function courses(){
-        return $this->hasMany('App\Course');
+        return $this->hasMany('LU\Course');
     }
 
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace LU;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,6 +12,6 @@ class Schedual extends Model
     ];
     
     public function groups(){
-        return $this->belongsToMany('App\Group');
+        return $this->belongsToMany('LU\Group');
     }
 }

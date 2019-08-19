@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace LU;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,26 +11,26 @@ class Group extends Model
         'year_id'
     ];
     public function course_language(){
-        return $this->belongsTo('App\CourseLanguage');
+        return $this->belongsTo('LU\CourseLanguage');
     }
 
     public function students(){
-        return $this->belongsToMany('App\Student')->withPivot(['is_active','start_date','leave_date']);    
+        return $this->belongsToMany('LU\Student')->withPivot(['is_active','start_date','leave_date']);    
     }
 
     public function instructors(){
-        return $this->belongsToMany('App\Instructor')->withPivot(['is_active','start_date','leave_date']);
+        return $this->belongsToMany('LU\Instructor')->withPivot(['is_active','start_date','leave_date']);
     }
 
     public function sessions(){
-        return $this->hasMany('App\Session');
+        return $this->hasMany('LU\Session');
     }
 
     public function scheduals(){
-        return $this->belongsToMany('App\Schedual');
+        return $this->belongsToMany('LU\Schedual');
     }
 
     public function year(){
-        return $this->belongsTo('App\Year');
+        return $this->belongsTo('LU\Year');
     }
 }

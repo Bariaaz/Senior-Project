@@ -29,6 +29,7 @@
         {!! Form::submit('Add Major', ['class' => 'btn btn-info']) !!}
         
         {!! Form::close()!!}
+        
     </div>        
   
     <div class="col-sm-6">          

@@ -1,7 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
-use App\Language;
+namespace LU\Http\Controllers;
+use LU\Language;
 
 use Illuminate\Http\Request;
 

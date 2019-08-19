@@ -12,8 +12,9 @@
 <body>
 
 <div class="container"> 
-  <h2>Hello {{$student->Foreign_fullname}}, here where your stuff is displayed</h2><br>         
-  <table class="table">
+  <h3>Dear {{$student->Foreign_fullname}}, just in case you forgot, your Grades <strong>Don't Define who you are.</strong> Have a nice day,<br><br> use sunscreen and stay hydrated ♥</h3><br> 
+  <h2>Grades :</h2>        
+  <table class="table table-bordered">
     <thead>
       <tr>
         <th>Course Code</th>
@@ -52,8 +53,8 @@
 </div>
 
 <div class="container"> 
-    <h2>Attendance Records</h2><br>         
-    <table class="table">
+    <h2>Attendance Records :</h2><br>         
+    <table class="table table-bordered">
       <thead>
         <tr>
           <th>Course name</th>

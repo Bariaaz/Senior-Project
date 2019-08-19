@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace LU;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,10 +12,10 @@ class Attendance extends Model
     ];
 
     public function student(){
-        return $this->belongsTo('App\Student');
+        return $this->belongsTo('LU\Student');
     }
 
     public function session(){
-        return $this->belongsTo('App\Session');
+        return $this->belongsTo('LU\Session');
     }
 }

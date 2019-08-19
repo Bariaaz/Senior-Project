@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace LU\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Semester;
+use LU\Semester;
 
 class AdminSemestersController extends Controller
 {

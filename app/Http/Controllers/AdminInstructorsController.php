@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace LU\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
-use App\Major;
+use LU\User;
+use LU\Major;
 use Illuminate\Support\Facades\Input;
-use App\Instructor;
-use App\CourseLanguage;
-use App\Year;
+use LU\Instructor;
+use LU\CourseLanguage;
+use LU\Year;
+use LU\Http\Requests\CreateInstructorRequest;
 
 
 class AdminInstructorsController extends Controller
@@ -43,7 +44,7 @@ class AdminInstructorsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateInstructorRequest $request)
     {
         $input=$request->all();
         $input['password']=bcrypt($request->password);
@@ -71,10 +72,6 @@ class AdminInstructorsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -99,16 +96,27 @@ class AdminInstructorsController extends Controller
     public function update(Request $request, $id)
     {
         $input=$request->all();
-        $input['password']=bcrypt($request->password);
-        $user=User::find($id)->update(array(
-            'username'=>Input::get('username'),
-            'email'=>Input::get('email'),
-            'fileNumber'=>Input::get('fileNumber'),
-            'password'=>$input['password'],
-            'phone_Number'=>Input::get('phone_Number'),
-            'is_active'=>Input::get('is_active'),
-            'role_id'=>3
-        ));
+        if(trim($request->password)==''){
+            $user=User::find($id)->update(array(
+                'username'=>$input['username'],
+                'email'=>$input['email'],
+                'fileNumber'=>$input['fileNumber'],
+                'phone_Number'=>$input['phone_Number'],
+                'is_active'=>$input['is_active'],
+                'role_id'=>3
+            ));
+        }else{
+            $input['password']=bcrypt($request->password);
+            $user=User::find($id)->update(array(
+                'username'=>$input['username'],
+                'email'=>$input['email'],
+                'password'=>$input['password'],
+                'fileNumber'=>$input['fileNumber'],
+                'phone_Number'=>$input['phone_Number'],
+                'is_active'=>$input['is_active'],
+                'role_id'=>3
+            ));
+        }
         Instructor::where('user_id', $id)->first()->update(array(
             'fullname'=>$input['instructor']['fullname'],
             'major_id'=>$input['instructor']['major_id'],
@@ -153,11 +161,13 @@ class AdminInstructorsController extends Controller
     }
 
     public function saveCoursesAssigned(Request $request,$instructor_id){
-        $instructor=Instructor::find($instructor_id);
-        $currentyear=Year::where('current_year',1)->first();
-        foreach($request->id as $coursechoiceId){
-            $courselanguage=CourseLanguage::find($coursechoiceId);
-            $instructor->courses()->attach($courselanguage,array('year_id'=>$currentyear->id));
+        if($request->has('id')){
+            $instructor=Instructor::find($instructor_id);
+            $currentyear=Year::where('current_year',1)->first();
+            foreach($request->id as $coursechoiceId){
+                $courselanguage=CourseLanguage::find($coursechoiceId);
+                $instructor->courses()->attach($courselanguage,array('year_id'=>$currentyear->id));
+            }
         }
         return redirect('admin/instructors');
         
@@ -170,10 +180,12 @@ class AdminInstructorsController extends Controller
     }
 
     public function updateAssignedCourses(Request $request, $id){
-        $instructor=Instructor::find($id);
-        foreach($request->id as $coursechoiceId){
-            $courselanguage=CourseLanguage::find($coursechoiceId);
-            $instructor->courses()->detach($courselanguage);
+        if($request->has('id')){
+            $instructor=Instructor::find($id);
+            foreach($request->id as $coursechoiceId){
+                $courselanguage=CourseLanguage::find($coursechoiceId);
+                $instructor->courses()->detach($courselanguage);
+            }
         }
         return redirect('admin/instructors');
     }

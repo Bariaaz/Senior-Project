@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace LU\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
-use App\Major;
-use App\Student;
+use LU\User;
+use LU\Major;
+use LU\Student;
 use Illuminate\Support\Facades\Input;
-use App\Language;
-use App\CourseLanguage;
-use App\Year;
+use LU\Language;
+use LU\CourseLanguage;
+use LU\Year;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Hash;
+use LU\Http\Requests\CreateStudentRequest;
 
 class AdminStudentsController extends Controller
 {
@@ -33,7 +34,7 @@ class AdminStudentsController extends Controller
         $q2=$request->lang;
         $q3=$request->course;
 
-        if($request->has('major')||$request->has('lang')||$request->has('course')){
+        if($request->major||$request->lang||$request->course){
             if($request->major && !$request->lang && !$request->course){
                 $users=User::where(function($q) use($request){
                     $q->whereHas('student',function($q) use($request){
@@ -59,7 +60,7 @@ class AdminStudentsController extends Controller
                 //$users->appends(['index'=>$q]);
                 return view('Admin.students.index', compact('users','languages','majors','courses','q1','q2','q3'));
             }
-            if($request->major && $request->course && !$request->language){
+            if($request->major && $request->course && !$request->lang){
                 $users=User::where(function($q) use($request){
                     $q->whereHas('student.courses', function($q) use($request){
                         $q->where('course_language_id',$request->course);
@@ -69,7 +70,7 @@ class AdminStudentsController extends Controller
                 })->paginate(1);
                 return view('Admin.students.index', compact('users','languages','majors','courses','q1','q2','q3'));
             }
-            if($request->major && $request->language && !$request->course){
+            if($request->major && $request->lang && !$request->course){
                 $users=User::where(function($q) use($request){
                     $q->whereHas('student',function($q) use($request){
                         $q->where('language_id',$request->lang)->where('major_id',$request->major);
@@ -77,22 +78,23 @@ class AdminStudentsController extends Controller
                 })->paginate(1);
                 return view('Admin.students.index', compact('users','languages','majors','courses','q1','q2','q3'));
             }
-            if($request->major && $request->language && $request->course){
+            if($request->major && $request->lang && $request->course){
                 $users=User::where(function($q) use($request){
-                    $q->whereHas('student.courses', function($q) use($request){
-                        $q->where('course_language_id',$request->course);
-                    })->whereHas('student',function($q) use($request){
-                        $q->where('major_id',$request->major);
-                    })->whereHas('student',function($q) use($request){
-                        $q->where('language_id',$request->lang);
+                    $q->whereHas('student',function($q) use($request){
+                        $q->where('language_id',$request->lang)->where('major_id',$request->major)->where(function($q) use($request){
+                             $q->whereHas('courses', function($q) use($request){
+                                $q->where('course_language_id',$request->course);
+                             });
+                        });
                     });
                 })->paginate(1);
-            }else
-                $users=Null;
+                return view('Admin.students.index', compact('users','languages','majors','courses','q1','q2','q3'));
+            }
+            $users=Null;
             
         }else
-            $users=User::where('role_id',2)->paginate(1);
-        return View::make('Admin.students.index', compact('users','languages','majors','courses','q1','q2','q3'));
+            $users=User::where('role_id',2)->paginate(3);
+        return view('Admin.students.index', compact('users','languages','majors','courses','q1','q2','q3'));
     }
 
     /**
@@ -113,7 +115,7 @@ class AdminStudentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateStudentRequest $request)
     {
         $input=$request->all();
         $input['password']=bcrypt($request->password);
@@ -148,10 +150,6 @@ class AdminStudentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -177,16 +175,27 @@ class AdminStudentsController extends Controller
     public function update(Request $request, $id)
     {
         $input=$request->all();
-        $pass=Hash::needsRehash($input['password']) ? Hash::make($input['password']) : $input['password'];
-        $user=User::find($id)->update(array(
-            'username'=>Input::get('username'),
-            'email'=>Input::get('email'),
-            'fileNumber'=>Input::get('fileNumber'),
-            'password'=>$pass,
-            'phone_Number'=>Input::get('phone_Number'),
-            'is_active'=>Input::get('is_active'),
-            'role_id'=>2
-        ));
+        if(trim($request->password)==''){
+            $user=User::find($id)->update(array(
+                'username'=>$input['username'],
+                'email'=>$input['email'],
+                'fileNumber'=>$input['fileNumber'],
+                'phone_Number'=>$input['phone_Number'],
+                'is_active'=>$input['is_active'],
+                'role_id'=>2
+            ));
+        }else{
+            $input['password']=bcrypt($request->password);
+            $user=User::find($id)->update(array(
+                'username'=>$input['username'],
+                'email'=>$input['email'],
+                'password'=>$input['password'],
+                'fileNumber'=>$input['fileNumber'],
+                'phone_Number'=>$input['phone_Number'],
+                'is_active'=>$input['is_active'],
+                'role_id'=>2
+            ));
+        }
         Student::where('user_id', $id)->first()->update(array(
             'Foreign_fullname'=>$input['student']['Foreign_fullname'],
             'Arabic_fullname'=>$input['student']['Arabic_fullname'],
@@ -209,7 +218,9 @@ class AdminStudentsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::findOrFail($id)->delete();
+        
+        return redirect('admin/students');
     }
 
     public function fetchCourses($id){
@@ -228,11 +239,13 @@ class AdminStudentsController extends Controller
     }
 
     public function saveCoursesAssigned(Request $request,$student_id){
-        $student=Student::find($student_id);
-        $currentyear=Year::where('current_year',1)->first();
-        foreach($request->id as $coursechoiceId){
-            $courselanguage=CourseLanguage::find($coursechoiceId);
-            $student->courses()->attach($courselanguage, array('year_id'=>$currentyear->id));
+        if($request->has('id')){
+            $student=Student::find($student_id);
+            $currentyear=Year::where('current_year',1)->first();
+            foreach($request->id as $coursechoiceId){
+                $courselanguage=CourseLanguage::find($coursechoiceId);
+                $student->courses()->attach($courselanguage, array('year_id'=>$currentyear->id));
+            }
         }
         return redirect('admin/students');
         
@@ -245,10 +258,12 @@ class AdminStudentsController extends Controller
     }
 
     public function updateAssignedCourses(Request $request, $id){
-        $student=Student::find($id);
-        foreach($request->id as $coursechoiceId){
-            $courselanguage=CourseLanguage::find($coursechoiceId);
-            $student->courses()->detach($courselanguage);
+       if($request->has('id')){
+            $student=Student::find($id);
+            foreach($request->id as $coursechoiceId){
+                $courselanguage=CourseLanguage::find($coursechoiceId);
+                $student->courses()->detach($courselanguage);
+            }
         }
         return redirect('admin/students');
     }

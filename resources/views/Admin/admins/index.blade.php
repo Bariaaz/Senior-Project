@@ -1,5 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.Admin')
 @section('content')
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,22 +13,23 @@
 <body>
 
 <div class="container">
-  <h2>Your Groups :</h2><br>           
-  <table class="table table-bordered">
+  <h2>Admins</h2>           
+  <table class="table">
     <thead>
       <tr>
-        <th>Group name</th>
-        <th>Academic Year</th>
-        <th>Take Attendance</th>
+        <th>Name</th>
+        <th>email</th>
+        <th>File Number</th>
       </tr>
     </thead>
     <tbody>
-        @if($groups)
-            @foreach($groups as $group)
+        @if($users)
+            @foreach($users as $user)
                 <tr>
-                    <td><a href="{{url('groupInfo/'.$group->id)}}">{{$group->name}}</a></td>
-                    <td>{{$group->year->year}}</td>
-                    <td><a href="{{url('instructor/'.$group->id.'/takeAttendance')}}">take attendance</a></td>
+                    <td><a href="{{url('admin/admins/'.$user->id.'/edit')}}">{{$user->username}}</a></td>
+                    <td>{{$user->email}}</td>
+                    <td>{{$user->fileNumber}}</td>
+                    
                 </tr>
             @endforeach
         @endif    

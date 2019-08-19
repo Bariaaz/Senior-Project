@@ -1,25 +1,31 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace LU\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
-use App\Group;
-use App\Grade;
-use App\Exam;
-use App\Student;
+use LU\Group;
+use LU\Grade;
+use LU\Exam;
+use LU\Student;
 use Illuminate\Support\Facades\Input;
-use App\Session;
-use App\Attendance;
+use LU\Session;
+use LU\Attendance;
+use LU\Year;
 
 class InstructorController extends Controller
 {
     public function groupsindex(){
-            $instructor = Auth::user()->instructor;
-            $groups=Group::whereHas('instructors', function($q) use ($instructor){
-                $q->where('instructor_id',$instructor->id);
-            })->get();
+            $year=Year::where('current_year',1)->first();
+            if($year){
+                $instructor = Auth::user()->instructor;
+                $groups=Group::whereHas('instructors', function($q) use ($instructor){
+                    $q->where('instructor_id',$instructor->id);
+                })->where('year_id',$year->id)->get();
+            }else{
+                $groups=Null;
+            }
             return view('Instructor.groupsindex',compact('groups'));
     }
 

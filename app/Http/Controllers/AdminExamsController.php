@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace LU\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\CourseLanguage;
-use App\Exam;
+use LU\CourseLanguage;
+use LU\Exam;
 
 class AdminExamsController extends Controller
 {

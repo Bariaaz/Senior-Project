@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace LU;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,10 +11,10 @@ class Year extends Model
     ];
 
     public function groups(){
-        return $this->hasMany('App\Group');
+        return $this->hasMany('LU\Group');
     }
 
     public function grades(){
-        return $this->hasMany('App\Grades');
+        return $this->hasMany('LU\Grades');
     }
 }

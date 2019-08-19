@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace LU;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,25 +12,25 @@ class CourseLanguage extends Model
     ];
     
     public function course(){
-        return $this->belongsTo('App\Course');
+        return $this->belongsTo('LU\Course');
     }
 
     public function language(){
-        return $this->belongsTo('App\Language');
+        return $this->belongsTo('LU\Language');
     }
      public function students(){
-         return $this->belongsToMany('App\Student');
+         return $this->belongsToMany('LU\Student');
      }
 
      public function instructors(){
-         return $this->belongsToMany('App\Instructor');
+         return $this->belongsToMany('LU\Instructor');
      }
 
      public function groups(){
-         return $this->hasMany('App\Group');
+         return $this->hasMany('LU\Group');
      }
 
      public function exams(){
-        return $this->hasMany('App\Exam');
+        return $this->hasMany('LU\Exam');
     }
 }
