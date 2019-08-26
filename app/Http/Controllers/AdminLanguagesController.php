@@ -18,4 +18,22 @@ class AdminLanguagesController extends Controller
         
         return redirect('admin/languages');
     }
+
+    public function edit($id){
+        $language=Language::find($id);
+
+        return view('Admin.languages.edit',compact('language'));
+    }
+
+    public function update(Request $request,$id){
+        $l=Language::find($id)->update($request->all());
+        
+        return redirect('admin/languages');
+    }
+
+    public function destroy($id){
+        Language::findOrFail($id)->delete();
+        
+        return redirect('admin/Languages');
+    }
 }

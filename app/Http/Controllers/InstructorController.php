@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Input;
 use LU\Session;
 use LU\Attendance;
 use LU\Year;
+use LU\Http\Requests\CreateSessionRequest;
 
 class InstructorController extends Controller
 {
@@ -43,7 +44,9 @@ class InstructorController extends Controller
 
     public function takeAttendance($group_id){
         $group=Group::find($group_id);
-        $students=$group->students;
+        $students=Student::whereHas('groups',function($q) use($group_id){
+            $q->where('group_id',$group_id)->where('is_active',1);
+        })->get();
         $weekdays=[
             'Monday'=>'Monday',
             'Tuseday'=>'Tuseday',
@@ -55,7 +58,7 @@ class InstructorController extends Controller
         return view('Instructor.takeAttendance',compact('students','group','weekdays'));
     }
 
-    public function saveAttendance(Request $request,$group_id){
+    public function saveAttendance(CreateSessionRequest $request,$group_id){
         $session=Session::create([
             'session_date'=>Input::get('session_date'),
             'note'=>Input::get('note'),
@@ -65,7 +68,9 @@ class InstructorController extends Controller
             'group_id'=>$group_id
         ]);
         $group=Group::find($group_id);
-        $students=$group->students;
+        $students=Student::whereHas('groups',function($q) use($group_id){
+            $q->where('group_id',$group_id)->where('is_active',1);
+        })->get();
         
         if(isset($request->students_id)){
             foreach($students as $student){

@@ -11,13 +11,20 @@ use LU\Student;
 use Illuminate\Support\Facades\Input;
 use LU\Session;
 use LU\Attendance;
+use LU\Year;
 
 
 class AdminAttendanceAndGradesController extends Controller
 {
-    public function listGroups(){
-        $groups=Group::all();
-        return view('Admin.grades.index', compact('groups'));
+    public function listGroups(Request $request){
+        $q=$request->year;
+        $years=Year::pluck('year', 'id')->all();
+        if($request->year){
+            $groups=Group::where('year_id',$request->year)->paginate(2);
+        }else{
+            $groups=Group::orderBy('year_id', 'des')->paginate(3);
+        }
+        return view('Admin.grades.index', compact('groups','years','q'));
     }
 
     public function showGroup($group_id){
@@ -35,6 +42,7 @@ class AdminAttendanceAndGradesController extends Controller
     public function fillGrades(Request $request,$group_id){
         $maxsum=0;
         $finalgrade=0;
+        $currentyear=Year::where('current_year',1)->first();
         $group=Group::find($group_id);
         $groupstudents=$group->students;
         $students=new Collection();
@@ -53,14 +61,14 @@ class AdminAttendanceAndGradesController extends Controller
                     $maxsum=$maxsum+$grade->exam->max_grade;
                     $finalgrade=$finalgrade+$grade->grade;
                 }
-                if($finalgrade<($maxsum/2) && !Grade::where('student_id',$student->id)->where('exam_id',$exam->id)->exists())
+                if($finalgrade<($maxsum/2) && !Grade::where('student_id',$student->id)->where('exam_id',$exam->id)->where('year_id',$currentyear->id)->exists())
                     $students->push($student);
                 $maxsum=0;
                 $finalgrade=0;    
             }
         }else{
             foreach($groupstudents as $student){
-                if(!Grade::where('student_id',$student->id)->where('exam_id',$exam->id)->exists())
+                if(!Grade::where('student_id',$student->id)->where('exam_id',$exam->id)->where('year_id',$currentyear->id)->exists())
                     $students->push($student);
             }
         }

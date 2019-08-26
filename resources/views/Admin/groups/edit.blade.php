@@ -22,5 +22,9 @@
     
     {!! Form::submit('Update Group', ['class' => 'btn btn-info']) !!}
     
+    {!! Form::close()!!}<br>
+    {!! Form::open(['method' => 'Delete', 'action'=> ['AdminGroupsController@destroy',$group->id]]) !!}
+    {!! Form::submit('Delete Group', ['class' => 'btn btn-danger']) !!}
+
     {!! Form::close()!!}
     @endsection('content')

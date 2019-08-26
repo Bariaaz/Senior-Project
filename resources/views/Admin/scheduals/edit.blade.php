@@ -23,5 +23,9 @@
 
 {!! Form::submit('Update Schedual', ['class' => 'btn btn-info']) !!}
 
+{!! Form::close()!!}<br>
+{!! Form::open(['method' => 'Delete', 'action'=> ['AdminSchedualsController@destroy',$schedual->id]]) !!}
+{!! Form::submit('Delete Schedual', ['class' => 'btn btn-danger']) !!}
+
 {!! Form::close()!!}
 @endsection('content')

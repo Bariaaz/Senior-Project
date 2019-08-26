@@ -6,12 +6,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
 use LU\Grade;
+use LU\Year;
+use LU\Attendance;
 
 class StudentController extends Controller
 {
     public function fetchGradesAndAttendance(){
         $student = Auth::user()->student;
-        $attendances=$student->attendances;
+        $curyear=Year::where('current_year',1)->first();
+        $attendances=Attendance::where(function($q) use($student,$curyear){
+            $q->whereHas('student',function($q) use($student){
+                $q->where('id',$student->id);
+            })->whereHas('session.group', function($q) use($curyear){
+                $q->where('year_id',$curyear->id);
+            });
+        })->get();
         $grades=$student->grades;
         $sum=0;
         foreach($grades as $key=>$grade){

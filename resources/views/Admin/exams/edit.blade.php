@@ -42,6 +42,10 @@
     
     {!! Form::submit('Update Exam', ['class' => 'btn btn-info']) !!}
     
+    {!! Form::close()!!}<br>
+    {!! Form::open(['method' => 'Delete', 'action'=> ['AdminExamsController@destroy',$exam->id]]) !!}
+    {!! Form::submit('Delete Exam', ['class' => 'btn btn-danger']) !!}
+
     {!! Form::close()!!}
 
     @endsection('content')

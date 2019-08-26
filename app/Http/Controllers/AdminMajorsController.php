@@ -18,4 +18,22 @@ class AdminMajorsController extends Controller
         
         return redirect('admin/majors');
     }
+
+    public function edit($id){
+        $major=Major::find($id);
+        
+        return view('Admin.majors.edit',compact('major'));
+    }
+
+    public function update(Request $request, $id){
+        $s=Major::find($id)->update($request->all());
+        
+        return redirect('admin/majors');
+    }
+
+    public function destroy($id){
+        Major::findOrFail($id)->delete();
+        
+        return redirect('admin/majors');
+    }
 }

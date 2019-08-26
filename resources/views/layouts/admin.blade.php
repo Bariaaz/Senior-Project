@@ -56,7 +56,7 @@
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-user fa-fw"></i><i class="fa fa-caret-down"></i>
+                  <i class="fa fa-caret-down"></i> {{Auth::user()->username}}
               </a>
               <ul class="dropdown-menu dropdown-user">
                   <li>
@@ -140,6 +140,7 @@
                 <ul class="treeview-menu">
                   <li><a href="{{ url('admin/courses') }}"><i class="fa fa-circle-o"></i>All Courses</a></li>
                   <li><a href="{{ url('admin/courses/create') }}"><i class="fa fa-circle-o"></i>Create Course</a></li>
+                  <li><a href="{{ url('admin/attreport') }}"><i class="fa fa-circle-o"></i>Reports</a></li>
                 </ul>
               </li>
 

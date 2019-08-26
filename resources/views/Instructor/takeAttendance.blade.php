@@ -69,6 +69,14 @@
     {!! Form::close()!!}
   </div>
   <div>
+      @if(count($errors)>0)
+      <div class="alert alert-danger">
+          <ul>
+              @foreach($errors->all() as $e)
+                  <li>{{$e}}</li>
+              @endforeach
+          </ul>
+      @endif    
   </div>
   </body>
   </html>

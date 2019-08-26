@@ -44,7 +44,7 @@
                 @if($majors)
                     @foreach($majors as $m)
                         <tr>
-                            <td>{{$m->name}}</td>
+                            <td><a href="{{url('admin/majors/'.$m->id.'/edit')}}">{{$m->name}}</a></td>
                             <td>{{$m->display_name}}</td>
                         </tr>
                     @endforeach

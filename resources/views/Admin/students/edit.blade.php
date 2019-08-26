@@ -75,20 +75,13 @@
 
 {!! Form::submit('Update Student', ['class' => 'btn btn-info']) !!}
 
-{!! Form::close()!!}
+{!! Form::close()!!}<br>
+
 
 {!! Form::open(['method' => 'Delete', 'action'=> ['AdminStudentsController@destroy',$user->id]]) !!}
 {!! Form::submit('Delete Student', ['class' => 'btn btn-danger']) !!}
 
 {!! Form::close()!!}
 
-@if(count($errors)>0)
-    <div class="alert alert-danger">
-        <ul>
-            @foreach($errors->all() as $e)
-                <li>{{$e}}</li>
-            @endforeach
-        </ul>
-@endif    
 @endsection
 

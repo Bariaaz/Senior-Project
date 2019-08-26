@@ -25,5 +25,10 @@
 
 {!! Form::submit('Update Course', ['class' => 'btn btn-info']) !!}
 
+{!! Form::close()!!}<br>
+
+{!! Form::open(['method' => 'Delete', 'action'=> ['AdminCoursesController@destroy',$course->id]]) !!}
+{!! Form::submit('Delete Course', ['class' => 'btn btn-danger']) !!}
+
 {!! Form::close()!!}
 @endsection

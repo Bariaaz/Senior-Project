@@ -59,7 +59,9 @@ class AdminSemestersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $semester=Semester::find($id);
+        
+        return view('Admin.semesters.edit',compact('semester'));
     }
 
     /**
@@ -71,7 +73,9 @@ class AdminSemestersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $s=Semester::find($id)->update($request->all());
+        
+        return redirect('admin/semesters');
     }
 
     /**
@@ -82,6 +86,8 @@ class AdminSemestersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Semester::findOrFail($id)->delete();
+        
+        return redirect('admin/semesters');
     }
 }

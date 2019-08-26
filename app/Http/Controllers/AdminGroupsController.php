@@ -18,10 +18,16 @@ class AdminGroupsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $groups=Group::all();
-        return view('Admin.groups.index', compact('groups'));
+        $q=$request->year;
+        $years=Year::pluck('year', 'id')->all();
+        if($request->year){
+            $groups=Group::where('year_id',$request->year)->paginate(2);
+        }else{
+            $groups=Group::orderBy('year_id', 'des')->paginate(3);
+        }
+        return view('Admin.groups.index', compact('groups','years','q'));
     }
 
     /**
@@ -60,10 +66,6 @@ class AdminGroupsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -106,7 +108,9 @@ class AdminGroupsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Group::findOrFail($id)->delete();
+        
+        return redirect('admin/groups');
     }
 
     public function fetchStudents($group_id){
@@ -117,7 +121,7 @@ class AdminGroupsController extends Controller
             $q->whereHas('courses', function($q) use($course,$year){
                 $q->where('course_language_id',$course->id)->where('year_id',$year->id);
             })->whereDoesntHave('groups', function($q) use($group,$year){
-                $q->where('course_language_id',$group->course_language_id)->where('year_id',$year->id);
+                $q->where('course_language_id',$group->course_language_id)->where('year_id',$year->id)->where('is_active',1);
             });
         })->get();
         return view('Admin.groups.assignStudents',compact('students','group_id'));
@@ -134,7 +138,9 @@ class AdminGroupsController extends Controller
 
     public function editAssignedStudents($group_id){
         $group=Group::find($group_id);
-        $students=$group->students;
+        $students=Student::whereHas('groups', function($q) use($group){
+            $q->where('group_id',$group->id);//->where('is_active',1);
+        })->get();
         return view('Admin.groups.editAssignedStudents',compact('students', 'group'));
     }
 
@@ -142,7 +148,7 @@ class AdminGroupsController extends Controller
         $group=Group::find($group_id);
         foreach($request->id as $studentChoiceId){
             $student=Student::find($studentChoiceId);
-            $group->students()->detach($student);
+            $group->students()->updateExistingPivot($student->id,array('is_active'=>0),false);
         }
         return redirect('admin/groups');
     }

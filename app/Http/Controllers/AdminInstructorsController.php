@@ -132,7 +132,9 @@ class AdminInstructorsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::findOrFail($id)->delete();
+        
+        return redirect('admin/instructors');
     }
 
     public function fetchCourses($id){

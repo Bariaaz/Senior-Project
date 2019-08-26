@@ -46,6 +46,12 @@
 
 {!! Form::submit('Update Instructor', ['class' => 'btn btn-info']) !!}
 
+{!! Form::close()!!}<br>
+
+{!! Form::open(['method' => 'Delete', 'action'=> ['AdminInstructorsController@destroy',$user->id]]) !!}
+{!! Form::submit('Delete Instructor', ['class' => 'btn btn-danger']) !!}
+
 {!! Form::close()!!}
+
 @endsection
 

@@ -14,6 +14,24 @@
 <body>
 
 <div class="container">
+    <h2>Filter groups By Year:</h2><br>
+    {!! Form::open(['method' => 'GET', 'action'=> 'AdminAttendanceAndGradesController@listGroups']) !!}
+
+ <div style="display:flex">
+    {!! Form::label('y', 'Year :') !!}
+    <div style="flex:1">
+        <div class="col-md-8">
+          {!! Form::select('year', array(''=>'Year')+$years,'', ['class' => 'form-control']) !!}
+        </div>
+    </div>
+    
+    <div style="flex:1">
+      {!! Form::submit('Filter', ['class' => 'btn btn-success']) !!}
+      {!! Form::close()!!}
+    </div>
+ </div><br>
+
+ @if($groups)
   <h2>Groups</h2>           
   <table class="table">
     <thead>
@@ -25,7 +43,6 @@
       </tr>
     </thead>
     <tbody>
-        @if($groups)
             @foreach($groups as $group)
                 <tr>
                     <td><a href="{{url('admin/groupInfo/'.$group->id)}}">{{$group->name}}</a></td>
@@ -33,10 +50,17 @@
                     <td>{{$group->course_language->language->name}}</td>
                     <td>{{$group->year->year}}</td>
                 </tr>
-            @endforeach
-        @endif    
+            @endforeach   
     </tbody>
   </table>
+  @endif
+</div>
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-5">
+      @if($groups)
+        {{$groups->appends(['year'=>$q])->links()}}
+      @endif
+    </div>
 </div>
 
 </body>

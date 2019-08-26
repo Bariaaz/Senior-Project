@@ -93,6 +93,8 @@ Route::group(['middleware'=>'admin'], function(){
     Route::post('admin/years','AdminYearsController@store');
     Route::get('admin/years/{year_object}/edit','AdminYearsController@edit');
     Route::PATCH('admin/year/{year_id}','AdminYearsController@update');
+    Route::DELETE('admin/years/{id}','AdminYearsController@destroy');
+    
 
     //Admins routes
     Route::get('admin/admins','AdminController@index');
@@ -100,6 +102,7 @@ Route::group(['middleware'=>'admin'], function(){
     Route::post('admin/admins','AdminController@store');
     Route::get('admin/admins/{id}/edit','AdminController@edit');
     Route::PATCH('admin/admins/{id}','AdminController@update');
+    Route::DELETE('admin/admins/{id}','AdminController@destroy');
 
     //Scheduals Routes
     Route::get('admin/scheduals','AdminSchedualsController@index');
@@ -107,22 +110,28 @@ Route::group(['middleware'=>'admin'], function(){
     Route::post('admin/scheduals','AdminSchedualsController@store');
     Route::get('admin/scheduals/{schedual_object}/edit','AdminSchedualsController@edit');
     Route::PATCH('admin/scheduals/{s_id}','AdminSchedualsController@update');
+    Route::DELETE('admin/scheduals/{id}','AdminSchedualsController@destroy');
 
 
     //Majors Routes 
     Route::get('admin/majors', 'AdminMajorsController@indexAndCreate');
     Route::post('admin/majors', 'AdminMajorsController@store');
     Route::get('admin/majors/{major}/edit', 'AdminMajorsController@edit');
-    Route::get('admin/majors/{major_id}', 'AdminMajorsController@update');
+    Route::PATCH('admin/majors/{major_id}', 'AdminMajorsController@update');
+    Route::DELETE('admin/majors/{id}','AdminMajorsController@destroy');
 
     //Languages Routes 
     Route::get('admin/languages', 'AdminLanguagesController@indexAndCreate');
     Route::post('admin/languages', 'AdminLanguagesController@store');
     Route::get('admin/languages/{languages}/edit', 'AdminLanguagesController@edit');
-    Route::get('admin/languages/{languages_id}', 'AdminLanguagesController@update');
+    Route::PATCH('admin/languages/{languages_id}', 'AdminLanguagesController@update');
+    Route::DELETE('admin/languages/{id}','AdminLanguagesController@destroy');
 
     //search Routes
     Route::get('admin/studentSearch', 'AdminSearchController@searchStudent');
+    Route::get('admin/attreport','AdminSearchController@attendanceReport');
+
+    
 
 
 
@@ -132,6 +141,8 @@ Route::group(['middleware'=>'admin'], function(){
 
 
 });
+
+
 
 //Instructor Section
 Route::group(['middleware'=>'instructor'], function(){

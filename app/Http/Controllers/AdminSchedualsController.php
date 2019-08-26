@@ -53,4 +53,10 @@ class AdminSchedualsController extends Controller
         
         return redirect('admin/scheduals');
     }
+
+    public function destroy($id){
+        Schedual::findOrFail($id)->delete();
+        
+        return redirect('admin/scheduals');
+    }
 }

@@ -96,6 +96,8 @@ class AdminExamsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Exam::findOrFail($id)->delete();
+        
+        return redirect('admin/exams');
     }
 }

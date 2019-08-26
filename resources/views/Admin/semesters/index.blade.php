@@ -55,7 +55,7 @@
                 @if($semesters)
                     @foreach($semesters as $s)
                         <tr>
-                            <td>{{$s->display_name}}</td>
+                            <td><a href="{{url('admin/semesters/'.$s->id.'/edit')}}">{{$s->display_name}}</a></td>
                             <td>{{$s->is_one_year_semester==1 ? 'Year' : 'spring/fall'}}</td>
                             <td>{{$s->academic_year}}
                         </tr>

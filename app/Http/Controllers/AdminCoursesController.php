@@ -103,6 +103,8 @@ class AdminCoursesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Course::findOrFail($id)->delete();
+        
+        return redirect('admin/courses');
     }
 }
