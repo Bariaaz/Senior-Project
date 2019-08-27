@@ -30,6 +30,8 @@ class CreateSemestersTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('semesters');
+        Schema::enableForeignKeyConstraints();
     }
 }

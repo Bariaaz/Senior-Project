@@ -19,7 +19,6 @@ class CreateExamsTable extends Migration
             $table->string('name');
             $table->string('display_name');
             $table->integer('max_grade');
-            $table->string('exam_date');
             $table->smallInteger('is_written_exam');
             $table->smallInteger('is_session_one');
             $table->foreign('course_language_id')->references('id')->on('course_language')->onDelete('cascade')->onUpdate('cascade');

@@ -21,7 +21,7 @@ class CreateStudentsTable extends Migration
             $table->string('Foreign_fullname');
             $table->string('Arabic_fullname');
             $table->string('academic_year');
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->smallInteger('has_L3_Course');
             $table->string('branch');
             $table->timestamps();
@@ -38,6 +38,8 @@ class CreateStudentsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('students');
+        Schema::enableForeignKeyConstraints();
     }
 }

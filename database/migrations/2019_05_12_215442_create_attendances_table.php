@@ -18,7 +18,7 @@ class CreateAttendancesTable extends Migration
             $table->unsignedInteger('student_id');
             $table->unsignedInteger('session_id');
             $table->smallInteger('attended_int');
-            $table->string('note');
+            $table->string('note')->nullable();
             $table->timestamps();
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('session_id')->references('id')->on('sessions')->onDelete('cascade')->onUpdate('cascade');

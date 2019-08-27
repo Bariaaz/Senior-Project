@@ -16,6 +16,7 @@ class CreateLanguagesTable extends Migration
         Schema::create('languages', function (Blueprint $table) {
             $table->increments('id')->unsigned();
             $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -26,6 +27,8 @@ class CreateLanguagesTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('languages');
+        Schema::enableForeignKeyConstraints();
     }
 }

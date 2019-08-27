@@ -31,6 +31,8 @@ class CreateInstructorsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('instructors');
+        Schema::enableForeignKeyConstraints();
     }
 }

@@ -28,6 +28,8 @@ class CreateMajorsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('majors');
+        Schema::enableForeignKeyConstraints();
     }
 }

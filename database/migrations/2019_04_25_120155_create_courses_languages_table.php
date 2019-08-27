@@ -30,8 +30,8 @@ class CreateCoursesLanguagesTable extends Migration
      */
     public function down()
     {
-        Schema::table('course_language', function (Blueprint $table) {
-            //
-        });
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('course_language');
+        Schema::enableForeignKeyConstraints();
     }
 }

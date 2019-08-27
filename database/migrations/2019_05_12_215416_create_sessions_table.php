@@ -17,7 +17,7 @@ class CreateSessionsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('group_id');
             $table->string('session_date');
-            $table->string('note');
+            $table->string('note')->nullable();
             $table->string('day_of_week');
             $table->time('starting_time');
             $table->time('ending_time');
